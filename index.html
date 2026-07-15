@@ -739,6 +739,163 @@
 .aws-logo {
   filter: invert(57%) sepia(97%) saturate(2500%) hue-rotate(5deg) brightness(105%) contrast(105%);
 }
+
+	/* ==========================================
+   Responsive Upgrade Layer
+   Mobile + Tablet Optimization
+   ========================================== */
+
+/* Prevent unexpected horizontal overflow */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Better mobile spacing */
+@media (max-width: 480px) {
+
+  body {
+    font-size: 15px;
+  }
+
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 10vw, 2.8rem);
+    word-break: break-word;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+  }
+
+  .hero-cta {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+}
+
+
+/* Tablet improvements */
+@media (min-width: 481px) and (max-width: 900px) {
+
+  section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+}
+
+
+/* Better cards on small screens */
+@media (max-width: 600px) {
+
+  .featured,
+  .project-card,
+  .activity-card,
+  .cert-card {
+    border-radius: 8px;
+  }
+
+
+  .featured-top {
+    flex-direction: column;
+  }
+
+
+  .featured-links {
+    width: 100%;
+  }
+
+
+  .featured-links .btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .stat-cell {
+    padding: 1.2rem;
+  }
+
+}
+
+
+/* Fix SVG diagrams on mobile */
+@media (max-width: 600px) {
+
+  .arch-diagram {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+
+
+  .arch-diagram svg {
+    min-width: 520px;
+  }
+
+}
+
+
+/* Better terminal experience on mobile */
+@media (max-width: 480px) {
+
+  .terminal-body {
+    font-size: 0.78rem;
+    padding: 1rem;
+  }
+
+  .terminal-input-row {
+    padding: 0.8rem;
+  }
+
+}
+
+
+/* Footer mobile alignment */
+@media (max-width: 600px) {
+
+  footer {
+    flex-direction: column;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+}
+
+
+/* Better touch targets */
+@media (max-width: 600px) {
+
+  .btn {
+    min-height: 44px;
+  }
+
+  .contact-link {
+    padding: 0.8rem 0;
+  }
+
+}
 </style>
 </head>
 <body>
