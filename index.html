@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atharv Satpute — Software Engineer, Backend &amp; Generative AI</title>
+<meta name="description" content="Atharv Satpute — Software Development Engineer working across backend systems and generative AI. Production RAG pipelines, event-driven microservices, and applied ML at scale.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --ink: #0A1220;
+    --surface: #101A2E;
+    --surface-raised: #142238;
+    --line: #223252;
+    --steel: #6B7C9C;
+    --mist: #C7D2E3;
+    --white: #F3F6FB;
+    --teal: #3FA9C9;
+    --teal-dim: #2C7A93;
+    --amber: #F4A261;
+    --amber-dim: #C97D45;
+    --font-display: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --max-w: 1040px;
+    --spine-w: 72px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--mist);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--teal); text-decoration: none; }
+  a:hover { color: var(--amber); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .mono { font-family: var(--font-mono); }
+
+  /* ---------- Layout shell ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--spine-w) 1fr;
+  }
+  @media (max-width: 780px) {
+    .shell { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Route spine (signature element) ---------- */
+  .spine {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 780px) {
+    .spine { display: none; }
+  }
+  .spine svg { height: 92vh; width: 40px; overflow: visible; }
+  .spine-track {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 2;
+  }
+  .spine-progress {
+    fill: none;
+    stroke: var(--amber);
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 80ms linear;
+  }
+  .spine-node {
+    fill: var(--ink);
+    stroke: var(--steel);
+    stroke-width: 2;
+    r: 5;
+    transition: stroke 200ms ease, fill 200ms ease, r 200ms ease;
+  }
+  .spine-node.active {
+    stroke: var(--amber);
+    fill: var(--amber);
+    r: 6;
+  }
+  #spineMarker {
+    transition: transform 100ms linear;
+  }
+  #spineMarker circle:first-child {
+    filter: drop-shadow(0 0 4px rgba(244, 162, 97, 0.6));
+  }
+
+  /* mobile top progress bar (same signature, responsive form) */
+  .top-progress {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--line);
+    z-index: 100;
+  }
+  .top-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--amber);
+    transition: width 80ms linear;
+  }
+  @media (max-width: 780px) {
+    .top-progress { display: block; }
+  }
+
+  main { min-width: 0; }
+
+  section {
+    padding: 6.5rem 1.75rem;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    border-bottom: 1px solid var(--line);
+  }
+  section:last-of-type { border-bottom: none; }
+  @media (max-width: 600px) {
+    section { padding: 4rem 1.25rem; }
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+    display: block;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-kicker {
+    font-family: var(--font-mono);
+    color: var(--steel);
+    font-size: 0.95rem;
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    animation: fadeUp 700ms ease forwards;
+    animation-delay: 100ms;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6.5vw, 4.4rem);
+    line-height: 1.05;
+    opacity: 0;
+    animation: fadeUp 700ms ease forwards;
+    animation-delay: 250ms;
+  }
+  .hero h1 .accent { color: var(--amber); }
+  .hero-sub {
+    margin-top: 1.6rem;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: var(--mist);
+    max-width: 640px;
+    opacity: 0;
+    animation: fadeUp 700ms ease forwards;
+    animation-delay: 420ms;
+  }
+  .hero-meta {
+    margin-top: 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--steel);
+    opacity: 0;
+    animation: fadeUp 700ms ease forwards;
+    animation-delay: 550ms;
+  }
+  .hero-cta {
+    margin-top: 2.4rem;
+    display: flex;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 700ms ease forwards;
+    animation-delay: 680ms;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+  .btn:hover { border-color: var(--teal); transform: translateY(-1px); color: var(--white); }
+  .btn-primary {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .btn-primary:hover { background: var(--amber-dim); border-color: var(--amber-dim); color: var(--ink); }
+
+  /* route-draw hero graphic */
+  .hero-route {
+    margin-top: 3.2rem;
+    opacity: 0;
+    animation: fadeUp 900ms ease forwards;
+    animation-delay: 780ms;
+  }
+  .hero-route svg { width: 100%; max-width: 560px; height: auto; }
+  .route-path {
+    fill: none;
+    stroke: var(--teal);
+    stroke-width: 2;
+    stroke-dasharray: 620;
+    stroke-dashoffset: 620;
+    animation: drawRoute 1.8s ease-out forwards;
+    animation-delay: 900ms;
+  }
+  @keyframes drawRoute {
+    to { stroke-dashoffset: 0; }
+  }
+  .route-dot {
+    fill: var(--amber);
+    opacity: 0;
+    animation: popIn 400ms ease forwards;
+  }
+
+  /* ---------- Section headers ---------- */
+  .section-head { margin-bottom: 2.8rem; }
+  .section-head h2 { font-size: clamp(1.7rem, 3.5vw, 2.3rem); }
+  .section-head p { color: var(--steel); margin-top: 0.7rem; max-width: 620px; }
+
+  /* ---------- About ---------- */
+  .about-text { font-size: 1.08rem; max-width: 680px; }
+  .about-text p { margin: 0 0 1.1rem; }
+  .about-text strong { color: var(--white); font-weight: 600; }
+
+  .badge-row {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .badge {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--mist);
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.8rem;
+    border-radius: 3px;
+    background: var(--surface);
+  }
+
+  /* ---------- Experience ---------- */
+  .exp-item { display: grid; grid-template-columns: 140px 1fr; gap: 1.5rem; }
+  @media (max-width: 600px) { .exp-item { grid-template-columns: 1fr; gap: 0.4rem; } }
+  .exp-period { font-family: var(--font-mono); color: var(--steel); font-size: 0.88rem; padding-top: 0.2rem; }
+  .exp-role h3 { font-size: 1.25rem; }
+  .exp-role .company { color: var(--teal); font-family: var(--font-mono); font-size: 0.95rem; margin-top: 0.3rem; display: block; }
+  .exp-role ul { margin: 1rem 0 0; padding-left: 1.1rem; color: var(--mist); }
+  .exp-role li { margin-bottom: 0.5rem; }
+
+  /* ---------- Featured project ---------- */
+  .featured {
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 2.6rem;
+    border: 1px solid var(--line);
+  }
+  @media (max-width: 600px) { .featured { padding: 1.6rem; } }
+  .featured-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; }
+  .featured h3 { font-size: clamp(1.5rem, 3vw, 1.9rem); }
+  .featured-tagline { color: var(--mist); margin-top: 0.6rem; max-width: 600px; }
+  .featured-links { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+
+  .stat-grid {
+    margin-top: 2.4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  @media (max-width: 700px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .stat-cell {
+    background: var(--surface-raised);
+    padding: 1.5rem 1.2rem;
+  }
+  .stat-num {
+    font-family: var(--font-mono);
+    font-size: clamp(1.5rem, 3vw, 1.9rem);
+    color: var(--amber);
+    font-weight: 600;
+  }
+  .stat-label {
+    margin-top: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--steel);
+    line-height: 1.4;
+  }
+
+  .arch-diagram {
+    margin-top: 2.6rem;
+    overflow-x: auto;
+  }
+  .arch-diagram svg { min-width: 640px; width: 100%; height: auto; }
+  .arch-box text { font-family: var(--font-mono); font-size: 11px; fill: var(--white); }
+  .arch-box rect { fill: var(--ink); stroke: var(--line); stroke-width: 1; }
+  .arch-box.kafka rect { fill: var(--amber); stroke: var(--amber); }
+  .arch-box.kafka text { fill: var(--ink); font-weight: 600; }
+  .arch-arrow { stroke: var(--steel); stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+
+  .tech-tags { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 0.55rem; }
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--teal);
+    border: 1px solid var(--teal-dim);
+    padding: 0.32rem 0.65rem;
+    border-radius: 3px;
+  }
+
+  .featured-detail { margin-top: 2.2rem; color: var(--mist); font-size: 0.98rem; }
+  .featured-detail summary {
+    cursor: pointer;
+    font-family: var(--font-mono);
+    color: var(--teal);
+    font-size: 0.88rem;
+  }
+  .featured-detail[open] summary { margin-bottom: 1rem; }
+  .featured-detail ul { padding-left: 1.2rem; }
+  .featured-detail li { margin-bottom: 0.6rem; }
+
+  /* ---------- Interactive Quadtree demo ---------- */
+  .quadtree-demo {
+    margin-top: 2.4rem;
+    padding-top: 2.2rem;
+    border-top: 1px solid var(--line);
+  }
+  .qd-header h4 {
+    font-family: var(--font-body);
+    color: var(--white);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+  .qd-header p {
+    color: var(--steel);
+    font-size: 0.9rem;
+    margin: 0 0 1.1rem;
+    max-width: 620px;
+  }
+  .qd-canvas-wrap {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--ink);
+    max-width: 100%;
+  }
+  #qtCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    cursor: crosshair;
+    touch-action: manipulation;
+  }
+  .qd-controls {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .qd-btn { padding: 0.6rem 1.1rem; font-size: 0.82rem; }
+  .qd-btn.active { border-color: var(--amber); color: var(--amber); }
+  .qd-stats {
+    font-size: 0.82rem;
+    color: var(--steel);
+  }
+
+  /* ---------- Other projects ---------- */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.3rem;
+  }
+  @media (max-width: 700px) { .project-grid { grid-template-columns: 1fr; } }
+  .project-card {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1.8rem;
+    background: var(--surface);
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+  .project-card:hover { border-color: var(--teal-dim); transform: translateY(-2px); }
+  .project-card .tag {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .project-card h3 { font-size: 1.15rem; margin-top: 0.6rem; }
+  .project-card p { color: var(--mist); font-size: 0.94rem; margin-top: 0.7rem; }
+  .project-card .links { margin-top: 1.1rem; display: flex; gap: 1rem; font-family: var(--font-mono); font-size: 0.85rem; }
+
+  /* ---------- Skills ---------- */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 2.5rem;
+  }
+  @media (max-width: 600px) { .skills-grid { grid-template-columns: 1fr; } }
+  .skill-group .mono.group-label {
+    font-size: 0.82rem;
+    color: var(--steel);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 0.9rem;
+  }
+  .skill-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-pill {
+    font-size: 0.88rem;
+    color: var(--white);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.75rem;
+    border-radius: 3px;
+  }
+
+  /* ---------- Activity ---------- */
+  .activity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 780px) { .activity-grid { grid-template-columns: 1fr; } }
+  .activity-card {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1.6rem;
+    background: var(--surface);
+  }
+  .activity-card .group-label {
+    font-size: 0.8rem;
+    color: var(--steel);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .gh-chart-wrap {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.75rem;
+    overflow-x: auto;
+  }
+  .gh-chart-wrap img { display: block; min-width: 640px; width: 100%; height: auto; }
+  .activity-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+  }
+  .medium-feed { min-height: 120px; }
+  .medium-post {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .medium-post:last-child { border-bottom: none; }
+  .medium-post a {
+    color: var(--white);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .medium-post a:hover { color: var(--amber); }
+  .medium-post .post-date {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--steel);
+    margin-top: 0.3rem;
+  }
+  .activity-fallback { color: var(--steel); font-size: 0.9rem; }
+
+  /* ---------- Terminal easter egg ---------- */
+  .terminal-box {
+    background: #0C1526;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .terminal-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--line);
+  }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .terminal-title { color: var(--steel); font-size: 0.78rem; margin-left: 0.6rem; }
+  .terminal-body {
+    padding: 1.2rem 1.2rem 0.4rem;
+    min-height: 160px;
+    max-height: 320px;
+    overflow-y: auto;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .term-line { color: var(--mist); margin-bottom: 0.5rem; white-space: pre-wrap; }
+  .term-line.term-echo { color: var(--steel); }
+  .term-echo .term-prompt-inline { color: var(--teal); }
+  .term-cmd { color: var(--amber); }
+  .term-line a { color: var(--teal); }
+  .terminal-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.2rem 1.1rem;
+  }
+  .term-prompt { color: var(--amber); font-size: 0.9rem; }
+  .terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Certifications ---------- */
+  .cert-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  @media (max-width: 600px) { .cert-list { grid-template-columns: 1fr; } }
+  .cert-card {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 1.4rem 1.6rem;
+    background: var(--surface);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .cert-icon {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--teal-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--white);
+    font-weight: 700;
+  }
+  .cert-card h4 { font-family: var(--font-body); color: var(--white); font-size: 1rem; font-weight: 600; margin: 0; }
+  .cert-card span { display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--steel); margin-top: 0.3rem; }
+
+  /* ---------- Contact / footer ---------- */
+  .contact-section { text-align: left; }
+  .contact-links {
+    margin-top: 2.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--mist);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: color 180ms ease, padding-left 180ms ease;
+  }
+  .contact-link:hover { color: var(--amber); padding-left: 0.4rem; }
+  .contact-link .arrow { color: var(--steel); }
+
+  footer {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 2.5rem 1.75rem 3.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--steel);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  /* reveal-on-scroll: visible by default. Only hidden pre-animation when
+     JS has actually run (html.js), so content is never dependent on JS
+     to be visible -- true progressive enhancement, not a hard requirement. */
+  .reveal { opacity: 1; transform: none; }
+  html.js .reveal:not(.visible) { opacity: 0; transform: translateY(18px); }
+  .reveal.visible { opacity: 1; transform: translateY(0); transition: opacity 600ms ease, transform 600ms ease; }
+
+  ::selection { background: var(--amber); color: var(--ink); }
+
+  /* ---------- Command palette ---------- */
+  .cmdk-hint {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 60;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--steel);
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    padding: 0.5rem 0.85rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  }
+  .cmdk-hint kbd {
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.72rem;
+    color: var(--mist);
+  }
+  @media (max-width: 780px) { .cmdk-hint { display: none; } }
+
+  .cmdk-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,9,16,0.7);
+    backdrop-filter: blur(2px);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 12vh;
+  }
+  .cmdk-overlay.open { display: flex; }
+  .cmdk-box {
+    width: min(560px, 90vw);
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .cmdk-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 1rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--white);
+    outline: none;
+  }
+  .cmdk-input::placeholder { color: var(--steel); }
+  .cmdk-results { max-height: 320px; overflow-y: auto; padding: 0.5rem; }
+  .cmdk-item {
+    padding: 0.7rem 0.8rem;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--mist);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cmdk-item .cmdk-tag { color: var(--steel); font-size: 0.78rem; }
+  .cmdk-item.active { background: var(--teal-dim); color: var(--white); }
+  .cmdk-empty { padding: 1rem 1.2rem; color: var(--steel); font-family: var(--font-mono); font-size: 0.85rem; }
+  
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+}
+
+.badge-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.aws-logo {
+  filter: invert(57%) sepia(97%) saturate(2500%) hue-rotate(5deg) brightness(105%) contrast(105%);
+}
+</style>
+</head>
+<body>
+
+<div class="top-progress"><div class="top-progress-fill" id="topProgressFill"></div></div>
+
+<button class="cmdk-hint" id="cmdkHint" type="button" aria-label="Open command palette">
+  <span>Jump to…</span> <kbd>⌘K</kbd>
+</button>
+
+<div class="cmdk-overlay" id="cmdkOverlay">
+  <div class="cmdk-box">
+    <input type="text" class="cmdk-input mono" id="cmdkInput" placeholder="Jump to a section or project…" autocomplete="off" spellcheck="false" aria-label="Search sections and projects">
+    <div class="cmdk-results" id="cmdkResults"></div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- Signature route spine -->
+  <aside class="spine" aria-hidden="true">
+    <svg viewBox="0 0 40 1010" preserveAspectRatio="none">
+      <path class="spine-track" id="spineTrack" d="M20,10 L20,1000" />
+      <path class="spine-progress" id="spineProgress" d="M20,10 L20,1000" stroke-dasharray="990" stroke-dashoffset="990" />
+      <circle class="spine-node" data-section="hero" cx="20" cy="10" />
+      <circle class="spine-node" data-section="about" cx="20" cy="109" />
+      <circle class="spine-node" data-section="experience" cx="20" cy="208" />
+      <circle class="spine-node" data-section="featured" cx="20" cy="307" />
+      <circle class="spine-node" data-section="featured2" cx="20" cy="406" />
+      <circle class="spine-node" data-section="projects" cx="20" cy="505" />
+      <circle class="spine-node" data-section="skills" cx="20" cy="604" />
+      <circle class="spine-node" data-section="activity" cx="20" cy="703" />
+      <circle class="spine-node" data-section="terminal" cx="20" cy="802" />
+      <circle class="spine-node" data-section="certifications" cx="20" cy="901" />
+      <circle class="spine-node" data-section="contact" cx="20" cy="1000" />
+      <g id="spineMarker" transform="translate(20,10)">
+        <circle r="9" fill="var(--ink)" stroke="var(--amber)" stroke-width="2"/>
+        <circle r="3" fill="var(--amber)"/>
+      </g>
+    </svg>
+  </aside>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <span class="hero-kicker mono">Atharv Satpute</span>
+      <h1>Systems that route,<br>reason, and <span class="accent">decide</span> — in production.</h1>
+      <p class="hero-sub">I'm Atharv, a Software Engineer working across backend, frontend and generative AI systems. I've shipped RAG pipelines at 84% retrieval precision under 400ms, and Java/Kafka microservices processing 1M+ transactions a day — then measured both instead of asserting they work.</p>
+      <p class="hero-meta mono">Mumbai, India · 2.5+ years · Open to relocation (London)</p>
+      <div class="hero-cta">
+        <a href="#featured" class="btn btn-primary">View flagship project →</a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+      <div class="hero-route" aria-hidden="true">
+        <svg viewBox="0 0 560 120" fill="none">
+          <path class="route-path" d="M10,100 C120,100 140,40 230,40 S340,90 430,90 S520,20 550,20" stroke-dasharray="4 10"/>
+          <circle class="route-dot" cx="10" cy="100" r="5" style="animation-delay:900ms"/>
+          <circle class="route-dot" cx="230" cy="40" r="5" style="animation-delay:1400ms"/>
+          <circle class="route-dot" cx="430" cy="90" r="5" style="animation-delay:1900ms"/>
+          <circle class="route-dot" cx="550" cy="20" r="6" style="animation-delay:2400ms"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-head reveal">
+        <span class="eyebrow">Origin</span>
+        <h2>About</h2>
+      </div>
+      <div class="about-text reveal">
+        <p>I'm a Software Engineer at <strong>AvenuesAI (CC-Avenue)</strong> in Mumbai, working across backend systems and generative AI on a fintech platform processing <strong>1M+ transactions daily</strong>. I started as a Junior Software Engineer building the Java Spring Boot microservices behind a hotel channel manager used by <strong>1,000+ hotels</strong>, and was promoted to <strong>Machine Learning Engineer <strong>, where I now build the RAG and ML systems layered on top of it.</p>
+        <p>The pattern across my work is the same whether it's backend or ML: <strong>ship it, then measure it.</strong> A RAG pipeline I built runs at <strong>84% retrieval precision under 400ms latency</strong>. A Kafka-based microservices platform I architected across <strong>50+ integrations</strong> cut manual interventions by 60–80% and improved API response times by 35%. A payout reconciliation system I automated hit <strong>100% settlement accuracy</strong>. Every number here is one I can walk through in a design review, not a resume adjective.</p>
+      </div>
+<div class="badge-row reveal">
+
+  <span class="badge">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws -logo">
+    AWS Certified AI Practitioner
+  </span>
+
+  <span class="badge">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws -logo">
+    AWS Certified ML Engineer – Associate
+  </span>
+
+  <span class="badge">
+    <img src="https://cdn.simpleicons.org/meta/0668E1" alt="Meta" class="badge-logo">
+    Open-source contributor, huggingface/OpenEnv
+  </span>
+
+  <span class="badge">
+    <img src="https://cdn.simpleicons.org/python/3776AB" alt="Python" class="badge-logo">
+    2+ years production fintech &amp; ML
+  </span>
+
+</div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="section-head reveal">
+        <span class="eyebrow">Waypoint</span>
+        <h2>Experience</h2>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-period mono">Apr 2025 — Present</div>
+        <div class="exp-role">
+          <h3>Machine Learning Engineer</h3>
+          <span class="company">AvenuesAI (CC-Avenue), Mumbai</span>
+          <ul>
+            <li>Owned end-to-end delivery of a customer-facing pricing feature: architected a Java Spring Boot + Kafka microservices platform across 50+ integrations, cutting manual interventions by 60–80% and improving API response times by 35%.</li>
+            <li>Designed and shipped production RAG pipelines (LangChain, FAISS, fine-tuned Hugging Face embeddings) powering natural-language question answering over domain-specific data — 84% retrieval precision at sub-400ms latency.</li>
+            <li>Sole architect of a Python data pipeline ingesting 50,000+ records daily, feeding forecasting models that improved pricing revenue accuracy by 20–25%.</li>
+            <li>Built a full experiment-tracking and drift-monitoring lifecycle (MLflow) for safe iteration on production-facing models.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="exp-item reveal" style="margin-top: 2.2rem;">
+        <div class="exp-period mono">Apr 2024 — Feb 2025</div>
+        <div class="exp-role">
+          <h3>Junior Software Engineer</h3>
+          <span class="company">AvenuesAI (CC-Avenue), Mumbai</span>
+          <ul>
+            <li>Designed a Java Spring Boot microservices hotel channel manager used by 1,000+ hotels, with API Gateway, Eureka service discovery, and centralized Config Server — full ownership from design through production.</li>
+            <li>Integrated LangChain and FAISS into an LLM-powered RAG pipeline for transaction anomaly detection, improving detection accuracy by 30%.</li>
+            <li>Designed Kafka-based microservices processing 50,000+ daily asynchronous transactions across Python and Java services; tracked 20 ML model versions in MLflow.</li>
+            <li>Achieved 100% settlement accuracy and cut manual payout processing by 50% through an automated Python/Java reconciliation system.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECT 1 -->
+    <section id="featured">
+      <div class="section-head reveal">
+        <span class="eyebrow">Flagship build — systems &amp; algorithms</span>
+        <h2>RouteMind</h2>
+      </div>
+
+      <div class="featured reveal">
+        <div class="featured-top">
+       <div>
+  <h3>Real-time fleet dispatch, built and benchmarked like a systems paper</h3>
+  <p class="featured-tagline">
+    Inspired by real-world ride-hailing platforms like Uber, this 7-service event-driven system solves real-time nearest-driver dispatch and routing challenges. It combines a hand-built Quadtree spatial index, Dijkstra + A* pathfinding, a from-scratch LRU cache, and a trained ML model for ETA prediction — every result independently benchmarked, not asserted.
+  </p>
+</div>
+          <div class="featured-links">
+            <a href="https://github.com/atharvsatpute/routemind-platform" class="btn" target="_blank" rel="noopener">Repo ↗</a>
+            <a href="https://medium.com/@atharvsatpute777" class="btn" target="_blank" rel="noopener">Article ↗</a>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="14.3" data-decimals="1" data-suffix="×">14.3×</div>
+            <div class="stat-label">faster spatial search vs. brute-force at 50K tracked drivers</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="29.8" data-decimals="1" data-suffix="%">29.8%</div>
+            <div class="stat-label">fewer nodes explored by A* vs. Dijkstra, identical path cost</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="79.7" data-decimals="1" data-suffix="%">79.7%</div>
+            <div class="stat-label">LRU route cache hit rate at production capacity</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="63" data-decimals="0" data-suffix="%">63%</div>
+            <div class="stat-label">lower ETA error than static baseline, R² = 0.97</div>
+          </div>
+        </div>
+
+        <div class="arch-diagram" aria-hidden="true">
+          <svg viewBox="0 0 900 130">
+            <defs>
+              <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="#6B7C9C"/>
+              </marker>
+            </defs>
+            <g class="arch-box"><rect x="0" y="45" width="120" height="40" rx="4"/><text x="60" y="69" text-anchor="middle">Driver App</text></g>
+            <path class="arch-arrow" d="M120,65 L155,65"/>
+            <g class="arch-box"><rect x="158" y="45" width="120" height="40" rx="4"/><text x="218" y="69" text-anchor="middle">Location Svc</text></g>
+            <path class="arch-arrow" d="M278,65 L313,65"/>
+            <g class="arch-box kafka"><rect x="316" y="45" width="110" height="40" rx="4"/><text x="371" y="69" text-anchor="middle">Kafka</text></g>
+            <path class="arch-arrow" d="M426,65 L461,65"/>
+            <g class="arch-box"><rect x="464" y="45" width="120" height="40" rx="4"/><text x="524" y="69" text-anchor="middle">Dispatch Svc</text></g>
+            <path class="arch-arrow" d="M584,65 L619,65"/>
+            <g class="arch-box"><rect x="622" y="45" width="120" height="40" rx="4"/><text x="682" y="63" text-anchor="middle">ETA Model</text><text x="682" y="76" text-anchor="middle" style="font-size:9px; fill:#6B7C9C">Python / FastAPI</text></g>
+            <path class="arch-arrow" d="M742,65 L777,65"/>
+            <g class="arch-box"><rect x="780" y="45" width="118" height="40" rx="4"/><text x="839" y="69" text-anchor="middle">Tracking Svc</text></g>
+          </svg>
+        </div>
+
+        <div class="tech-tags">
+          <span class="tech-tag">Java 11</span>
+          <span class="tech-tag">Spring Boot</span>
+		  <span class="tech-tag">Spring Boot - microservices</span>
+		  <span class="tech-tag">Data Structures and Algorithms</span>
+          <span class="tech-tag">Apache Kafka</span>
+          <span class="tech-tag">Redis GEO</span>
+          <span class="tech-tag">Python / FastAPI</span>
+          <span class="tech-tag">scikit-learn</span>
+          <span class="tech-tag">WebSocket / STOMP</span>
+          <span class="tech-tag">Docker</span>
+          <span class="tech-tag">Kubernetes</span>
+        </div>
+
+        <details class="featured-detail">
+          <summary>+ What's actually custom-built here</summary>
+          <ul>
+            <li><strong style="color:var(--white)">Quadtree spatial index</strong> — hand-implemented, branch-and-bound k-NN search, kept in sync via Kafka rather than querying Redis on every dispatch.</li>
+            <li><strong style="color:var(--white)">Dijkstra + A*</strong> — both implemented over a weighted road graph; A* is primary, Dijkstra is an explicit correctness baseline and fallback, verified to produce identical path costs across 500 trials.</li>
+            <li><strong style="color:var(--white)">LRU route cache</strong> — HashMap + doubly linked list from scratch, not <code style="color:var(--teal)">LinkedHashMap</code>, for O(1) get/put.</li>
+            <li><strong style="color:var(--white)">ETA correction model</strong> — a trained GradientBoostingRegressor served from a separate Python microservice, called over REST with a timeout and graceful fallback.</li>
+          </ul>
+        </details>
+
+        <div class="quadtree-demo">
+          <div class="qd-header">
+            <h4>Try it: nearest-driver search, live</h4>
+            <p>Click to drop drivers on the map. Click "Find nearest" then click a pickup point — watch the quadtree subdivide and prune, same algorithm as <code style="color:var(--teal)">DriverQuadTree.java</code>.</p>
+          </div>
+          <div class="qd-canvas-wrap" width="640">
+            <canvas id="qtCanvas" width="640" height="360" aria-label="Interactive Quadtree nearest-neighbor demo"></canvas>
+          </div>
+          <div class="qd-controls">
+            <button class="btn qd-btn" id="qtAddMode" type="button">+ Add drivers</button>
+            <button class="btn qd-btn" id="qtFindMode" type="button">Find nearest</button>
+            <button class="btn qd-btn" id="qtReset" type="button">Reset</button>
+            <span class="qd-stats mono" id="qtStats">Click "+ Add drivers", then click the map to place some.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED PROJECT 2 -->
+    <section id="featured2">
+      <div class="section-head reveal">
+        <span class="eyebrow">Flagship build — RAG &amp; agentic AI</span>
+        <h2>FinSight AI</h2>
+      </div>
+
+      <div class="featured reveal">
+        <div class="featured-top">
+          <div>
+            <h3>Autonomous financial intelligence agent, from ingestion to production deployment</h3>
+            <p class="featured-tagline">A production-grade RAG + multi-agent system that ingests live news, SEC filings, and market data, coordinates three specialized agents to answer complex financial questions, and returns a fully structured, typed report in under 3 seconds — with a full MLOps pipeline behind it, not just a notebook.</p>
+          </div>
+          <div class="featured-links">
+            <a href="https://github.com/atharvsatpute/finsight-AI-" class="btn" target="_blank" rel="noopener">Repo ↗</a>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="3" data-decimals="0" data-suffix="">3</div>
+            <div class="stat-label">coordinated agents — risk, sentiment, portfolio — via LangGraph orchestration</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="3" data-decimals="0" data-prefix="&lt;" data-suffix="s">&lt;3s</div>
+            <div class="stat-label">end-to-end response, query to structured report</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="3" data-decimals="0" data-suffix="">3</div>
+            <div class="stat-label">live data sources — news, SEC filings, market prices — via Kafka ingestion</div>
+          </div>
+          <div class="stat-cell">
+            <div class="stat-num count-up" data-count-to="100" data-decimals="0" data-suffix="%">100%</div>
+            <div class="stat-label">schema-validated agent output — Pydantic AI, zero raw string parsing</div>
+          </div>
+        </div>
+
+        <div class="arch-diagram" aria-hidden="true">
+          <svg viewBox="0 0 900 130">
+            <g class="arch-box"><rect x="0" y="45" width="130" height="40" rx="4"/><text x="65" y="69" text-anchor="middle">React Dashboard</text></g>
+            <path class="arch-arrow" d="M130,65 L165,65"/>
+            <g class="arch-box"><rect x="168" y="45" width="120" height="40" rx="4"/><text x="228" y="69" text-anchor="middle">FastAPI</text></g>
+            <path class="arch-arrow" d="M288,65 L323,65"/>
+            <g class="arch-box kafka"><rect x="326" y="45" width="120" height="40" rx="4"/><text x="386" y="63" text-anchor="middle">LangGraph</text><text x="386" y="76" text-anchor="middle" style="font-size:9px">3 agents · Groq</text></g>
+            <path class="arch-arrow" d="M446,65 L481,65"/>
+            <g class="arch-box"><rect x="484" y="45" width="120" height="40" rx="4"/><text x="544" y="63" text-anchor="middle">RAG Pipeline</text><text x="544" y="76" text-anchor="middle" style="font-size:9px; fill:#6B7C9C">FAISS · S3</text></g>
+            <path class="arch-arrow" d="M604,65 L639,65"/>
+            <g class="arch-box"><rect x="642" y="45" width="120" height="40" rx="4"/><text x="702" y="63" text-anchor="middle">Ingestion</text><text x="702" y="76" text-anchor="middle" style="font-size:9px; fill:#6B7C9C">Kafka · SEC/News</text></g>
+            <path class="arch-arrow" d="M762,65 L797,65"/>
+            <g class="arch-box"><rect x="800" y="45" width="100" height="40" rx="4"/><text x="850" y="63" text-anchor="middle">AWS EKS</text><text x="850" y="76" text-anchor="middle" style="font-size:9px; fill:#6B7C9C">Terraform</text></g>
+          </svg>
+        </div>
+
+        <div class="tech-tags">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">FastAPI</span>
+          <span class="tech-tag">LangGraph</span>
+          <span class="tech-tag">Pydantic AI</span>
+          <span class="tech-tag">Groq LLM</span>
+          <span class="tech-tag">FAISS</span>
+          <span class="tech-tag">HuggingFace Embeddings</span>
+          <span class="tech-tag">Apache Kafka</span>
+          <span class="tech-tag">MLflow</span>
+          <span class="tech-tag">Airflow</span>
+          <span class="tech-tag">Prometheus / Grafana</span>
+          <span class="tech-tag">Terraform</span>
+          <span class="tech-tag">AWS EKS</span>
+          <span class="tech-tag">React</span>
+        </div>
+
+        <details class="featured-detail">
+          <summary>+ What's actually custom-built here</summary>
+          <ul>
+            <li><strong style="color:var(--white)">Multi-agent orchestration</strong> — Risk, Sentiment, and Portfolio agents coordinated via LangGraph's explicit node/edge graph, each output validated by a Pydantic schema with automatic retry on malformed responses.</li>
+            <li><strong style="color:var(--white)">RAG pipeline</strong> — HuggingFace <code style="color:var(--teal)">all-mpnet-base-v2</code> embeddings, chunked with overlap, indexed in FAISS and persisted to S3, with retrieval precision tracked in MLflow.</li>
+            <li><strong style="color:var(--white)">Continuous ingestion</strong> — Kafka pipeline pulling live news (NewsAPI), SEC filings (EDGAR), and market prices on a 5-minute cycle.</li>
+            <li><strong style="color:var(--white)">Automated drift detection</strong> — a daily Airflow DAG evaluates RAG precision and auto-retrains embeddings if it drops below threshold, no manual intervention.</li>
+            <li><strong style="color:var(--white)">Full observability</strong> — Prometheus + Grafana dashboards for latency, agent success rate, and retrieval precision; entire stack provisioned via Terraform on AWS EKS.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
+
+    <!-- OTHER PROJECTS -->
+    <section id="projects">
+      <div class="section-head reveal">
+        <span class="eyebrow">Also shipped</span>
+        <h2>Other projects</h2>
+      </div>
+      <div class="project-grid">
+        <div class="project-card reveal">
+          <span class="tag mono">ML · Fintech Routing</span>
+          <h3>Smart Payment Routing System</h3>
+          <p>An ML-driven payment gateway router using XGBoost to predict the best gateway per transaction, with Kafka for event streaming and an LLM generating a plain-language explanation for every routing decision — explainability built in, not bolted on.</p>
+          <div class="links">
+            <a href="https://github.com/atharvsatpute/smart-payment-routing-system" target="_blank" rel="noopener">Repo ↗</a>
+          </div>
+        </div>
+        <div class="project-card reveal">
+          <span class="tag mono">ML · Feature Store</span>
+          <h3>Monzo-Inspired ML Platform</h3>
+          <p>A production-style data → features → real-time inference pipeline, with a Redis-backed feature store serving sub-10ms retrieval across 40+ engineered features.</p>
+          <div class="links">
+            <a href="https://github.com/atharvsatpute/monzo-txn-ml" target="_blank" rel="noopener">Repo ↗</a>
+          </div>
+        </div>
+        <div class="project-card reveal">
+          <span class="tag mono">RAG · AI Search</span>
+          <h3>Perplexity AI Clone</h3>
+          <p>A production RAG-based AI search system — FastAPI, FAISS, and Groq LLM on the backend, React frontend, deployed 24/7 on AWS EC2 behind Nginx. Local sentence-transformer embeddings keep ingestion free and offline-capable.</p>
+          <div class="links">
+            <a href="https://github.com/atharvsatpute/perplexity-ai" target="_blank" rel="noopener">Repo ↗</a>
+            <a href="http://43.205.243.167" target="_blank" rel="noopener">Live demo ↗</a>
+          </div>
+        </div>
+        <div class="project-card reveal">
+          <span class="tag mono">Open Source · RL</span>
+          <h3>fraud_triage_env</h3>
+          <p>A reinforcement learning environment for fraud triage, contributed to <span class="mono" style="font-size:0.85em">meta-pytorch/OpenEnv</span> via PR #926 — 200-episode length, asymmetric reward structure. The project has since moved to <span class="mono" style="font-size:0.85em">huggingface/OpenEnv</span>.</p>
+          <div class="links">
+            <a href="https://github.com/huggingface/OpenEnv" target="_blank" rel="noopener">OpenEnv ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-head reveal">
+        <span class="eyebrow">Toolkit</span>
+        <h2>Skills &amp; stack</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <span class="mono group-label">Languages &amp; Frameworks</span>
+          <div class="skill-list">
+            <span class="skill-pill">Java 11/17</span>
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">JavaScript</span>
+            <span class="skill-pill">Spring Boot</span>
+            <span class="skill-pill">Spring Cloud</span>
+            <span class="skill-pill">FastAPI</span>
+            <span class="skill-pill">React 18</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <span class="mono group-label">ML &amp; Data</span>
+          <div class="skill-list">
+            <span class="skill-pill">XGBoost</span>
+            <span class="skill-pill">scikit-learn</span>
+            <span class="skill-pill">LangChain / LangGraph</span>
+            <span class="skill-pill">FAISS</span>
+            <span class="skill-pill">Pydantic AI</span>
+            <span class="skill-pill">MLflow</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <span class="mono group-label">Infrastructure</span>
+          <div class="skill-list">
+            <span class="skill-pill">Apache Kafka</span>
+            <span class="skill-pill">Redis</span>
+            <span class="skill-pill">Docker</span>
+            <span class="skill-pill">Kubernetes</span>
+            <span class="skill-pill">AWS (EC2, S3, EKS)</span>
+            <span class="skill-pill">Terraform</span>
+            <span class="skill-pill">Prometheus / Grafana</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <span class="mono group-label">Practices</span>
+          <div class="skill-list">
+            <span class="skill-pill">System design</span>
+            <span class="skill-pill">Event-driven architecture</span>
+            <span class="skill-pill">Applied algorithms</span>
+            <span class="skill-pill">Benchmarking</span>
+            <span class="skill-pill">CI/CD (Jenkins)</span>
+            <span class="skill-pill">Production on-call</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section id="activity">
+      <div class="section-head reveal">
+        <span class="eyebrow">Still building</span>
+        <h2>Recent activity</h2>
+      </div>
+      <div class="activity-grid">
+        <div class="activity-card reveal">
+          <span class="mono group-label">GitHub contributions</span>
+          <div class="gh-chart-wrap">
+            <img id="ghChart" src="https://ghchart.rshah.org/3FA9C9/atharvsatpute" alt="Atharv Satpute's GitHub contribution graph" loading="lazy">
+          </div>
+          <a href="https://github.com/atharvsatpute" target="_blank" rel="noopener" class="activity-link">View GitHub profile ↗</a>
+        </div>
+        <div class="activity-card reveal">
+          <span class="mono group-label">Latest from Medium</span>
+          <div id="mediumFeed" class="medium-feed">
+            <p class="activity-fallback">Loading recent posts…</p>
+          </div>
+          <a href="https://medium.com/@atharvsatpute777" target="_blank" rel="noopener" class="activity-link">All articles ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TERMINAL EASTER EGG -->
+    <section id="terminal">
+      <div class="section-head reveal">
+        <span class="eyebrow">One more thing</span>
+        <h2>Poke around</h2>
+      </div>
+      <div class="terminal-box reveal" id="terminalBox">
+        <div class="terminal-titlebar">
+          <span class="term-dot" style="background:#F4A261"></span>
+          <span class="term-dot" style="background:#3FA9C9"></span>
+          <span class="term-dot" style="background:#6B7C9C"></span>
+          <span class="terminal-title mono">atharv@portfolio: ~</span>
+        </div>
+        <div class="terminal-body" id="terminalOutput">
+          <div class="term-line">Type <span class="term-cmd">help</span> to see available commands.</div>
+        </div>
+        <div class="terminal-input-row">
+          <span class="term-prompt mono">$</span>
+          <input type="text" id="terminalInput" class="terminal-input mono" autocomplete="off" spellcheck="false" aria-label="Terminal command input">
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+      <div class="section-head reveal">
+        <span class="eyebrow">Verified</span>
+        <h2>Certifications</h2>
+      </div>
+      <div class="cert-list">
+        <div class="cert-card reveal">
+          <div class="cert-icon">AWS</div>
+          <div>
+            <h4>AWS Certified AI Practitioner</h4>
+            <span>Amazon Web Services</span>
+          </div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="cert-icon">AWS</div>
+          <div>
+            <h4>AWS Certified Machine Learning Engineer – Associate</h4>
+            <span>Amazon Web Services</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-list" style="margin-top: 1.2rem;">
+        <div class="cert-card reveal">
+          <div class="cert-icon" style="background: var(--surface-raised); color: var(--steel); border: 1px solid var(--line);">ED</div>
+          <div>
+            <h4>B.Tech, Computer Science</h4>
+            <span>Savitribai Phule Pune University · 2019 – 2023</span>
+          </div>
+        </div>
+        <div class="cert-card reveal">
+          <div class="cert-icon" style="background: var(--surface-raised); color: var(--steel); border: 1px solid var(--line);">ED</div>
+          <div>
+            <h4>PG Diploma, Advanced Computing</h4>
+            <span>CDAC Mumbai · 2023 – 2024</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-section">
+      <div class="section-head reveal">
+        <span class="eyebrow">Destination</span>
+        <h2>Let's talk</h2>
+        <p>Open to Backend &amp; Full-Stack &amp; Machine Learning Engineering roles. Based in Mumbai, actively open to relocation.</p>
+      </div>
+      <div class="contact-links reveal">
+        <a class="contact-link" href="mailto:atharvsatpute777@gmail.com"><span class="arrow">→</span> atharvsatpute777@gmail.com</a>
+        <a class="contact-link" href="https://github.com/atharvsatpute" target="_blank" rel="noopener"><span class="arrow">→</span> github.com/atharvsatpute</a>
+        <a class="contact-link" href="https://linkedin.com/in/atharv-satpute" target="_blank" rel="noopener"><span class="arrow">→</span> linkedin.com/in/atharv-satpute</a>
+        <a class="contact-link" href="https://medium.com/@atharvsatpute777" target="_blank" rel="noopener"><span class="arrow">→</span> medium.com/@atharvsatpute777</a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+ 
+  <span>© 2026 Made by Atharv Satpute — driven by systems thinking and open to engineering opportunities in Mumbai & London.</span>
+</footer>
+
+<script>
+  // ---- Scroll-linked route spine ----
+  const sections = ['hero','about','experience','featured','featured2','projects','skills','activity','terminal','certifications','contact'];
+  const spineProgress = document.getElementById('spineProgress');
+  const spineNodes = document.querySelectorAll('.spine-node');
+  const spineMarker = document.getElementById('spineMarker');
+  const topFill = document.getElementById('topProgressFill');
+  const SPINE_LEN = 990;
+  const SPINE_START = 10;
+
+  function onScroll() {
+    const doc = document.documentElement;
+    const scrollTop = doc.scrollTop || document.body.scrollTop;
+    const scrollHeight = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+    const pct = scrollHeight > 0 ? Math.min(scrollTop / scrollHeight, 1) : 0;
+
+    if (spineProgress) {
+      spineProgress.style.strokeDashoffset = String(SPINE_LEN - SPINE_LEN * pct);
+    }
+    if (spineMarker) {
+      const y = SPINE_START + SPINE_LEN * pct;
+      spineMarker.setAttribute('transform', `translate(20,${y.toFixed(1)})`);
+    }
+    if (topFill) {
+      topFill.style.width = (pct * 100) + '%';
+    }
+
+    // active node = last section whose top has passed the viewport's upper third
+    let activeId = sections[0];
+    for (const id of sections) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.4) activeId = id;
+    }
+    spineNodes.forEach(node => {
+      node.classList.toggle('active', node.dataset.section === activeId);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // ---- Reveal-on-scroll ----
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+
+  // Safety net: if anything is still hidden after 4s (e.g. an edge case
+  // where an element never intersects), reveal it anyway. Content should
+  // never be permanently invisible.
+  setTimeout(() => {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }, 4000);
+
+  // ---- Animated count-up stats ----
+  // Base text content is already the correct final value (progressive
+  // enhancement: no-JS users see the right number immediately). JS
+  // animates from 0 up to that value only once the stat scrolls into view.
+  function animateCountUp(el) {
+    const target = parseFloat(el.dataset.countTo);
+    const decimals = parseInt(el.dataset.decimals || '0', 10);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    if (isNaN(target)) return;
+
+    const duration = 1400;
+    const start = performance.now();
+
+    function frame(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+      el.textContent = prefix + current.toFixed(decimals) + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        el.textContent = prefix + target.toFixed(decimals) + suffix;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  const countEls = document.querySelectorAll('.count-up');
+  if ('IntersectionObserver' in window && countEls.length) {
+    const countIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCountUp(entry.target);
+          countIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    countEls.forEach(el => countIo.observe(el));
+  }
+
+  // ---- Interactive Quadtree demo ----
+  (function quadtreeDemo() {
+    const canvas = document.getElementById('qtCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+
+    const CAPACITY = 4;
+    let points = [];       // {x, y}
+    let mode = 'add';       // 'add' | 'find'
+    let pickup = null;
+    let nearest = [];
+    let visitedRects = [];
+    let nodesVisited = 0;
+
+    class QuadBox {
+      constructor(x, y, w, h) { this.x = x; this.y = y; this.w = w; this.h = h; }
+      contains(p) { return p.x >= this.x && p.x < this.x + this.w && p.y >= this.y && p.y < this.y + this.h; }
+      intersectsCircle(cx, cy, r) {
+        const closestX = Math.max(this.x, Math.min(cx, this.x + this.w));
+        const closestY = Math.max(this.y, Math.min(cy, this.y + this.h));
+        const dx = cx - closestX, dy = cy - closestY;
+        return (dx * dx + dy * dy) <= r * r;
+      }
+    }
+
+    class QuadNode {
+      constructor(boundary) {
+        this.boundary = boundary;
+        this.points = [];
+        this.divided = false;
+        this.children = null;
+      }
+      subdivide() {
+        const { x, y, w, h } = this.boundary;
+        const hw = w / 2, hh = h / 2;
+        this.children = [
+          new QuadNode(new QuadBox(x, y, hw, hh)),
+          new QuadNode(new QuadBox(x + hw, y, hw, hh)),
+          new QuadNode(new QuadBox(x, y + hh, hw, hh)),
+          new QuadNode(new QuadBox(x + hw, y + hh, hw, hh)),
+        ];
+        this.divided = true;
+        for (const p of this.points) {
+          for (const c of this.children) { if (c.insert(p)) break; }
+        }
+        this.points = [];
+      }
+      insert(p) {
+        if (!this.boundary.contains(p)) return false;
+        if (!this.divided && this.points.length < CAPACITY) { this.points.push(p); return true; }
+        if (!this.divided) this.subdivide();
+        for (const c of this.children) { if (c.insert(p)) return true; }
+        return false;
+      }
+      allRects(out) {
+        out.push(this.boundary);
+        if (this.divided) for (const c of this.children) c.allRects(out);
+      }
+    }
+
+    function buildTree() {
+      const root = new QuadNode(new QuadBox(0, 0, W, H));
+      for (const p of points) root.insert(p);
+      return root;
+    }
+
+    function kNearest(root, target, k) {
+      const heap = []; // {d, p}
+      visitedRects = [];
+      nodesVisited = 0;
+
+      function search(node) {
+        nodesVisited++;
+        visitedRects.push(node.boundary);
+        const worst = heap.length < k ? Infinity : heap[heap.length - 1].d;
+        if (!node.boundary.intersectsCircle(target.x, target.y, worst === Infinity ? 1e9 : worst)) return;
+
+        for (const p of node.points) {
+          const d = Math.hypot(p.x - target.x, p.y - target.y);
+          if (heap.length < k) {
+            heap.push({ d, p });
+            heap.sort((a, b) => a.d - b.d);
+          } else if (d < heap[heap.length - 1].d) {
+            heap[heap.length - 1] = { d, p };
+            heap.sort((a, b) => a.d - b.d);
+          }
+        }
+        if (node.divided) for (const c of node.children) search(c);
+      }
+      search(root);
+      return heap;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#0A1220';
+      ctx.fillRect(0, 0, W, H);
+
+      // subtle grid
+      ctx.strokeStyle = 'rgba(34,50,82,0.35)';
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx <= W; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
+      for (let gy = 0; gy <= H; gy += 40) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
+
+      // quadtree subdivision boundaries
+      if (points.length > 0) {
+        const root = buildTree();
+        const rects = [];
+        root.allRects(rects);
+        ctx.strokeStyle = 'rgba(63,169,201,0.35)';
+        ctx.lineWidth = 1;
+        rects.forEach(r => ctx.strokeRect(r.x, r.y, r.w, r.h));
+
+        // highlight visited rects from last search
+        if (visitedRects.length) {
+          ctx.fillStyle = 'rgba(244,162,97,0.06)';
+          visitedRects.forEach(r => ctx.fillRect(r.x, r.y, r.w, r.h));
+        }
+      }
+
+      // connecting lines to nearest
+      if (pickup && nearest.length) {
+        ctx.strokeStyle = '#F4A261';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        nearest.forEach(n => {
+          ctx.beginPath();
+          ctx.moveTo(pickup.x, pickup.y);
+          ctx.lineTo(n.p.x, n.p.y);
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+      }
+
+      // driver points
+      points.forEach(p => {
+        const isNearest = nearest.some(n => n.p === p);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, isNearest ? 6 : 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = isNearest ? '#F4A261' : '#3FA9C9';
+        ctx.fill();
+        if (isNearest) {
+          ctx.strokeStyle = '#F4A261';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      });
+
+      // pickup marker
+      if (pickup) {
+        ctx.beginPath();
+        ctx.arc(pickup.x, pickup.y, 7, 0, Math.PI * 2);
+        ctx.fillStyle = '#F3F6FB';
+        ctx.fill();
+        ctx.strokeStyle = '#0A1220';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    function setMode(newMode) {
+      mode = newMode;
+      document.getElementById('qtAddMode').classList.toggle('active', mode === 'add');
+      document.getElementById('qtFindMode').classList.toggle('active', mode === 'find');
+      const statsEl = document.getElementById('qtStats');
+      if (mode === 'add') {
+        statsEl.textContent = `${points.length} driver${points.length === 1 ? '' : 's'} placed. Click the map to add more.`;
+      } else {
+        statsEl.textContent = 'Click anywhere on the map to place a pickup request.';
+      }
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = W / rect.width, scaleY = H / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+
+      if (mode === 'add') {
+        points.push({ x, y });
+        nearest = [];
+        pickup = null;
+        document.getElementById('qtStats').textContent = `${points.length} driver${points.length === 1 ? '' : 's'} placed. Click the map to add more, or switch to "Find nearest".`;
+      } else {
+        if (points.length === 0) {
+          document.getElementById('qtStats').textContent = 'Add a few drivers first.';
+          return;
+        }
+        pickup = { x, y };
+        const root = buildTree();
+        const k = Math.min(3, points.length);
+        nearest = kNearest(root, pickup, k);
+        const bruteForceCost = points.length;
+        document.getElementById('qtStats').textContent =
+          `Found ${nearest.length} nearest in ${nodesVisited} quadrant node${nodesVisited === 1 ? '' : 's'} visited ` +
+          `(brute force would scan all ${bruteForceCost} driver${bruteForceCost === 1 ? '' : 's'}).`;
+      }
+      draw();
+    });
+
+    document.getElementById('qtAddMode').addEventListener('click', () => setMode('add'));
+    document.getElementById('qtFindMode').addEventListener('click', () => setMode('find'));
+    document.getElementById('qtReset').addEventListener('click', () => {
+      points = []; pickup = null; nearest = []; visitedRects = [];
+      setMode('add');
+      draw();
+    });
+
+    setMode('add');
+    draw();
+  })();
+
+  // ---- Medium feed (via rss2json, a public CORS-friendly RSS proxy) ----
+  (function loadMediumFeed() {
+    const container = document.getElementById('mediumFeed');
+    if (!container) return;
+    const feedUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' +
+      encodeURIComponent('https://medium.com/feed/@atharvsatpute777');
+
+    fetch(feedUrl)
+      .then(res => {
+        if (!res.ok) throw new Error('Feed request failed');
+        return res.json();
+      })
+      .then(data => {
+        if (!data.items || !data.items.length) throw new Error('No items');
+        const items = data.items.slice(0, 4);
+        container.innerHTML = items.map(item => {
+          const date = new Date(item.pubDate);
+          const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const title = item.title.replace(/</g, '&lt;');
+          return `<div class="medium-post">
+            <a href="${item.link}" target="_blank" rel="noopener">${title}</a>
+            <span class="post-date">${dateStr}</span>
+          </div>`;
+        }).join('');
+      })
+      .catch(() => {
+        container.innerHTML = '<p class="activity-fallback">Couldn\'t load recent posts right now — ' +
+          '<a href="https://medium.com/@atharvsatpute777" target="_blank" rel="noopener" style="color:var(--teal)">visit Medium directly</a>.</p>';
+      });
+  })();
+
+  // ---- Command palette (Cmd+K / Ctrl+K) ----
+  (function commandPalette() {
+    const hint = document.getElementById('cmdkHint');
+    const overlay = document.getElementById('cmdkOverlay');
+    const input = document.getElementById('cmdkInput');
+    const results = document.getElementById('cmdkResults');
+    if (!overlay || !input || !results) return;
+
+    const items = [
+      { label: 'About', tag: 'section', id: 'about' },
+      { label: 'Experience', tag: 'section', id: 'experience' },
+      { label: 'RouteMind', tag: 'flagship', id: 'featured' },
+      { label: 'FinSight AI', tag: 'flagship', id: 'featured2' },
+      { label: 'Smart Payment Routing System', tag: 'project', id: 'projects' },
+      { label: 'Monzo-Inspired ML Platform', tag: 'project', id: 'projects' },
+      { label: 'Perplexity AI Clone', tag: 'project', id: 'projects' },
+      { label: 'FinGuard', tag: 'project', id: 'projects' },
+      { label: 'fraud_triage_env (OSS)', tag: 'project', id: 'projects' },
+      { label: 'Skills & stack', tag: 'section', id: 'skills' },
+      { label: 'Recent activity', tag: 'section', id: 'activity' },
+      { label: 'Terminal', tag: 'fun', id: 'terminal' },
+      { label: 'Certifications', tag: 'section', id: 'certifications' },
+      { label: 'Contact', tag: 'section', id: 'contact' },
+    ];
+
+    let filtered = items.slice();
+    let activeIndex = 0;
+
+    function render() {
+      if (!filtered.length) {
+        results.innerHTML = '<div class="cmdk-empty">No matches. Try a different term.</div>';
+        return;
+      }
+      results.innerHTML = filtered.map((item, i) =>
+        `<div class="cmdk-item${i === activeIndex ? ' active' : ''}" data-id="${item.id}" data-index="${i}">
+          <span>${item.label}</span><span class="cmdk-tag">${item.tag}</span>
+        </div>`
+      ).join('');
+    }
+
+    function open() {
+      overlay.classList.add('open');
+      input.value = '';
+      filtered = items.slice();
+      activeIndex = 0;
+      render();
+      setTimeout(() => input.focus(), 30);
+    }
+
+    function close() {
+      overlay.classList.remove('open');
+    }
+
+    function jumpTo(id) {
+      const el = document.getElementById(id);
+      close();
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 80);
+    }
+
+    if (hint) hint.addEventListener('click', open);
+
+    document.addEventListener('keydown', (e) => {
+      const isMeta = e.metaKey || e.ctrlKey;
+      if (isMeta && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        overlay.classList.contains('open') ? close() : open();
+      } else if (e.key === 'Escape' && overlay.classList.contains('open')) {
+        close();
+      }
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      filtered = q ? items.filter(item => item.label.toLowerCase().includes(q)) : items.slice();
+      activeIndex = 0;
+      render();
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        activeIndex = Math.min(activeIndex + 1, filtered.length - 1);
+        render();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        activeIndex = Math.max(activeIndex - 1, 0);
+        render();
+      } else if (e.key === 'Enter') {
+        if (filtered[activeIndex]) jumpTo(filtered[activeIndex].id);
+      }
+    });
+
+    results.addEventListener('click', (e) => {
+      const item = e.target.closest('.cmdk-item');
+      if (item) jumpTo(item.dataset.id);
+    });
+  })();
+
+  // ---- Terminal easter egg ----
+  (function terminal() {
+    const input = document.getElementById('terminalInput');
+    const output = document.getElementById('terminalOutput');
+    const box = document.getElementById('terminalBox');
+    if (!input || !output) return;
+
+    const commands = {
+      help: () =>
+        'Available commands:\n' +
+        '  whoami       — who you\'re looking at\n' +
+        '  skills       — core toolkit\n' +
+        '  projects     — jump to featured work\n' +
+        '  experience   — current role\n' +
+        '  contact      — how to reach me\n' +
+        '  resume       — open GitHub profile\n' +
+        '  clear        — clear this terminal\n' +
+        '  sudo hire me — worth a try',
+      whoami: () =>
+        'Atharv Satpute — Software Development Engineer, Backend & Generative AI.\n' +
+        'Currently at AvenuesAI (CC-Avenue), Mumbai. Open to relocation.',
+      skills: () =>
+        'Java · Python · Spring Boot · FastAPI · LangChain/LangGraph · FAISS ·\n' +
+        'Kafka · Redis · Docker · Kubernetes · AWS (EC2/S3/EKS) · Terraform',
+      experience: () =>
+        'Machine Learning Engineer @ AvenuesAI (CC-Avenue), Apr 2025 – Present\n' +
+        'Junior Software Engineer @ AvenuesAI (CC-Avenue), Apr 2024 – Feb 2025',
+      projects: () => {
+        setTimeout(() => document.getElementById('featured').scrollIntoView({ behavior: 'smooth' }), 300);
+        return 'Scrolling to featured projects...';
+      },
+      contact: () =>
+        'Email:    atharvsatpute777@gmail.com\n' +
+        'LinkedIn: linkedin.com/in/atharv-satpute\n' +
+        'GitHub:   github.com/atharvsatpute',
+      resume: () => {
+        window.open('https://github.com/atharvsatpute', '_blank', 'noopener');
+        return 'Opening GitHub profile in a new tab...';
+      },
+      clear: () => { output.innerHTML = ''; return null; },
+      'sudo hire me': () =>
+        'Permission granted. Scrolling to contact section...' +
+        (setTimeout(() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }), 400), ''),
+    };
+
+    function printLine(html, cls) {
+      const div = document.createElement('div');
+      div.className = 'term-line' + (cls ? ' ' + cls : '');
+      div.innerHTML = html;
+      output.appendChild(div);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function runCommand(raw) {
+      const cmd = raw.trim();
+      if (!cmd) return;
+      printLine(`<span class="term-prompt-inline">$</span> ${cmd.replace(/</g, '&lt;')}`, 'term-echo');
+
+      const handler = commands[cmd.toLowerCase()];
+      if (!handler) {
+        printLine(`Command not found: <span class="term-cmd">${cmd.replace(/</g, '&lt;')}</span>. Type <span class="term-cmd">help</span> for options.`);
+        return;
+      }
+      const result = handler();
+      if (result) printLine(result.replace(/\n/g, '<br>'));
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        runCommand(input.value);
+        input.value = '';
+      }
+    });
+
+    if (box) {
+      box.addEventListener('click', () => input.focus());
+    }
+  })();
+</script>
+
+</body>
+</html>
