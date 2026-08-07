@@ -276,6 +276,13 @@
   .about-text p { margin: 0 0 1.1rem; }
   .about-text strong { color: var(--white); font-weight: 600; }
 
+  .about-flex { display: flex; gap: 2.5rem; align-items: flex-start; flex-wrap: wrap; }
+  .about-photo { flex-shrink: 0; width: 148px; height: 148px; border-radius: 50%; overflow: hidden; border: 1px solid var(--line); }
+  .about-photo 
+   { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .about-flex .about-text { flex: 1; min-width: 280px; }
+  @media (max-width: 600px) { .about-flex { flex-direction: column; align-items: center; text-align: center; } }
+
   .badge-row {
     margin-top: 2rem;
     display: flex;
@@ -967,19 +974,24 @@ html, body {
         <span class="eyebrow">Origin</span>
         <h2>About</h2>
       </div>
-      <div class="about-text reveal">
-        <p>I'm a Software Engineer at <strong>AvenuesAI (CC-Avenue)</strong> in Mumbai, working across backend systems and generative AI on a fintech platform processing <strong>1M+ transactions daily</strong>. I started as a Junior Software Engineer building the Java Spring Boot microservices behind a hotel channel manager used by <strong>1,000+ hotels</strong>, and was promoted to <strong>Machine Learning Engineer <strong>, where I now build the RAG and ML systems layered on top of it.</p>
-        <p>The pattern across my work is the same whether it's backend or ML: <strong>ship it, then measure it.</strong> A RAG pipeline I built runs at <strong>84% retrieval precision under 400ms latency</strong>. A Kafka-based microservices platform I architected across <strong>50+ integrations</strong> cut manual interventions by 60–80% and improved API response times by 35%. A payout reconciliation system I automated hit <strong>100% settlement accuracy</strong>. Every number here is one I can walk through in a design review, not a resume adjective.</p>
+      <div class="about-flex">
+        <div class="about-photo reveal">
+          <img src="image.jpg" alt="Atharv Satpute" width="148" height="148" loading="lazy">
+        </div>
+        <div class="about-text reveal">
+          <p>I'm a Software Engineer at <strong>AvenuesAI (CC-Avenue)</strong> in Mumbai, working across backend systems and generative AI on a fintech platform processing <strong>1M+ transactions daily</strong>. I started as a Junior Software Engineer building the Java Spring Boot microservices behind a hotel channel manager used by <strong>1,000+ hotels</strong>, and was promoted to <strong>Machine Learning Engineer</strong>, where I now build the RAG and ML systems layered on top of it.</p>
+          <p>The pattern across my work is the same whether it's backend or ML: <strong>ship it, then measure it.</strong> A RAG pipeline I built runs at <strong>84% retrieval precision under 400ms latency</strong>. A Kafka-based microservices platform I architected across <strong>50+ integrations</strong> cut manual interventions by 60–80% and improved API response times by 35%. A payout reconciliation system I automated hit <strong>100% settlement accuracy</strong>. Every number here is one I can walk through in a design review, not a resume adjective.</p>
+        </div>
       </div>
 <div class="badge-row reveal">
 
   <span class="badge">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws -logo">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws-logo">
     AWS Certified AI Practitioner
   </span>
 
   <span class="badge">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws -logo">
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazonaws.svg" alt="AWS" class="badge-logo aws-logo">
     AWS Certified ML Engineer – Associate
   </span>
 
@@ -1281,6 +1293,14 @@ html, body {
         <h2>Other projects</h2>
       </div>
       <div class="project-grid">
+        <div class="project-card reveal">
+          <span class="tag mono">Security · DSA</span>
+          <h3>RootProof</h3>
+          <p>A key transparency log and tamper-evident audit trail, built from scratch: an RFC 6962-style Merkle tree for O(log n) inclusion proofs, a hash-chained audit log, and HKDF key derivation — the same primitives behind Apple's Secure Enclave and iMessage Contact Key Verification. Independently re-verified by a separate Python service sharing zero code with the Java backend.</p>
+          <div class="links">
+            <a href="https://github.com/atharvsatpute/rootproof" target="_blank" rel="noopener">Repo ↗</a>
+          </div>
+        </div>
         <div class="project-card reveal">
           <span class="tag mono">ML · Fintech Routing</span>
           <h3>Smart Payment Routing System</h3>
@@ -1799,10 +1819,10 @@ html, body {
       { label: 'Experience', tag: 'section', id: 'experience' },
       { label: 'RouteMind', tag: 'flagship', id: 'featured' },
       { label: 'FinSight AI', tag: 'flagship', id: 'featured2' },
+      { label: 'RootProof', tag: 'project', id: 'projects' },
       { label: 'Smart Payment Routing System', tag: 'project', id: 'projects' },
       { label: 'Monzo-Inspired ML Platform', tag: 'project', id: 'projects' },
       { label: 'Perplexity AI Clone', tag: 'project', id: 'projects' },
-      { label: 'FinGuard', tag: 'project', id: 'projects' },
       { label: 'fraud_triage_env (OSS)', tag: 'project', id: 'projects' },
       { label: 'Skills & stack', tag: 'section', id: 'skills' },
       { label: 'Recent activity', tag: 'section', id: 'activity' },
