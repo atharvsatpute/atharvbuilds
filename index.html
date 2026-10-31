@@ -121,6 +121,23 @@ footer{text-align:center;padding:2rem 1rem 3rem;color:var(--dim);font:400 .75rem
 .pt figcaption{margin-top:.8rem}.stats{clear:both}
 @media(max-width:700px){.pt{float:none;width:min(280px,70vw);margin:0 0 2rem}}
 #nxt a{font:500 clamp(1.1rem,2.4vw,1.6rem) var(--sans);letter-spacing:-.01em}#nxt a:hover{letter-spacing:.01em}
+
+/* project detail modal */
+#pm{position:fixed;inset:0;z-index:98;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:flex;justify-content:center;align-items:flex-start;padding:5vh 1.2rem;overflow-y:auto;overscroll-behavior:contain;animation:pmf .3s ease-out}#pm[hidden]{display:none}
+@keyframes pmf{from{opacity:0}}@keyframes pmu{from{opacity:0;transform:translateY(28px)}}
+.pp{position:relative;width:min(860px,100%);background:#0a0a0a;border:1px solid #2a2a2a;border-radius:20px;padding:2.6rem 2.6rem 2rem;animation:pmu .45s cubic-bezier(.2,.7,.2,1);margin:auto 0}
+.px{position:absolute;top:1.2rem;right:1.2rem;width:42px;height:42px;border-radius:50%;border:1px solid #333;background:none;color:#fff;font-size:1rem;transition:background .3s,color .3s}.px:hover{background:#fff;color:#000}
+.pc h2{margin:.7rem 0 1rem;font-size:clamp(2rem,5vw,3rem);padding-right:3rem}
+.pc .ps{color:#c4c4c4;font-size:1.05rem;margin:0 0 1.6rem;max-width:720px}
+.pc h4{font:400 .72rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:2.4rem 0 .9rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.pa{display:flex;gap:.7rem;flex-wrap:wrap}.pa .btn{padding:.7rem 1.3rem;font-size:.86rem}
+.pr{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2rem}
+.pr div{background:#0a0a0a;padding:1.1rem}.pr b{display:block;font:500 1.55rem/1.1 var(--mono);letter-spacing:-.04em}.pr span{display:block;margin-top:.35rem;color:var(--mut);font-size:.78rem;line-height:1.35}
+.pc ol,.pc ul{margin:0;padding-left:1.2rem;color:#b5b5b5}.pc li{margin-bottom:.6rem;padding-left:.2rem}.pc li::marker{color:#666;font-family:var(--mono)}
+.pt2{width:100%;border-collapse:collapse;font-size:.92rem}.pt2 td{padding:.7rem .4rem .7rem 0;border-top:1px solid var(--line);vertical-align:top;color:#b5b5b5}.pt2 td:first-child{width:30%;color:#fff;font-weight:500;padding-right:1rem}
+.pn{display:flex;justify-content:space-between;gap:1rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid var(--line)}.pn button{background:none;border:0;color:var(--mut);font:400 .82rem var(--mono);padding:.5rem 0;transition:color .3s;text-align:left}.pn button:hover{color:#fff}
+.soon{color:var(--mut);font:400 .78rem var(--mono);margin-top:1.4rem}
+@media(max-width:700px){#pm{padding:0}.pp{border-radius:0;min-height:100%;padding:3.6rem 1.3rem 1.6rem;border:0}.pt2 td:first-child{width:38%}}
 /* reveal */
 html.js .rv{opacity:0;transform:translateY(34px);filter:blur(8px);transition:opacity .9s,transform .9s cubic-bezier(.2,.7,.2,1),filter .9s}
 html.js .rv.in{opacity:1;transform:none;filter:none}
@@ -229,15 +246,120 @@ const P=[
 ['01','Systems','RouteMind','Seven-service event-driven dispatch. Hand-built Quadtree, Dijkstra and A*, an LRU cache, and a Python ETA model.','14.3×','faster spatial search at 50K drivers',['Java','Kafka','Redis','FastAPI'],GH+'/routemind-platform'],
 ['02','Agentic AI','FinSight AI','LangGraph multi-agent RAG over live news, filings and prices, ingested through Kafka and deployed on EKS.','3 agents','risk · sentiment · portfolio',['LangGraph','FAISS','Terraform','EKS'],GH+'/finsight-AI-'],
 ['03','Payments','LedgerMesh','Saga-orchestrated fund transfers modelled on bank payment rails, with a hash-chained double-entry ledger.','8','microservices, Redis idempotency',['Java','Saga','Redis','Kafka'],GH],
-['04','Infrastructure','Distributed Rate Limiter','Hand-rolled RESP2 Redis client with atomic Lua scripts. No client library.','43,500','req/s at p99 2.5 ms',['Java','Redis','Lua'],GH],
+['04','Infrastructure','Distributed Rate Limiter','Hand-rolled RESP2 Redis client with atomic Lua scripts. No client library.','43,500','req/s at p99 2.5 ms',['Java','Redis','Lua'],GH+'/rate-limiter'],
 ['05','Security','RootProof','Merkle-tree key transparency log and a hash-chained audit log, checked by an independent Python verifier.','15/15','tests passing',['Java 21','Spring Boot','FastAPI'],GH],
-['06','Fraud','FinGuard','Fraud detection split across six Java services and run on Kubernetes.','6','services on Kubernetes',['Java','Kubernetes','Kafka'],GH],
+['06','Fraud','FinGuard','Fraud detection split across six Java services and run on Kubernetes.','6','services on Kubernetes',['Java','Kubernetes','Kafka'],GH+'/finguard'],
 ['07','Open source','fraud_triage_env','RL environment merged into OpenEnv. 200-step episodes and asymmetric rewards: a missed fraud costs −3.0.','PR #926','merged into OpenEnv',['Python','RL','Hugging Face'],'https://github.com/huggingface/OpenEnv'],
 ['08','ML','RankForge','Recommendation engine: FAISS retrieval feeding a LightGBM ranker.','2-stage','retrieve, then rank',['FAISS','LightGBM','Python'],GH],
 ['09','ML · Fintech','Smart Payment Routing','XGBoost picks the best gateway per transaction; an LLM explains every decision.','XGBoost','explainable routing',['Kafka','XGBoost','LLM'],GH+'/smart-payment-routing-system'],
-['10','ML platform','Monzo-style ML Platform','Redis-backed feature store serving inference features.','<10 ms','retrieval across 40+ features',['Redis','Python','Feature store'],GH+'/monzo-txn-ml']];
+['10','ML platform','Monzo-style ML Platform','Open-source toolkit for transaction data: anomaly detection, spend forecasting and category classification.','3 models','anomaly · spend · category',['XGBoost','LightGBM','Python'],GH+'/monzo-txn-ml']];
 const track=$('#track');
-track.innerHTML=P.map(p=>`<a class="card" href="${p[7]}" target="_blank" rel="noopener" draggable="false"><span class="go">↗</span>${art(p[0])}<span class="mono">${p[0]} · ${p[1]}</span><h3>${p[2]}</h3><p>${p[3]}</p><div class="big">${p[4]}<small>${p[5]}</small></div><div class="tags">${p[6].map(t=>`<i>${t}</i>`).join('')}</div></a>`).join('');
+track.innerHTML=P.map((p,i)=>`<a class="card" data-i="${i}" href="${p[7]}" target="_blank" rel="noopener" draggable="false" aria-haspopup="dialog"><span class="go">+</span>${art(p[0])}<span class="mono">${p[0]} · ${p[1]}</span><h3>${p[2]}</h3><p>${p[3]}</p><div class="big">${p[4]}<small>${p[5]}</small></div><div class="tags">${p[6].map(t=>`<i>${t}</i>`).join('')}</div></a>`).join('');
+/* project detail data (framed from each repo README) */
+const D=[
+{sum:"An event-driven platform that tracks a fleet in real time, matches every order to the best driver with a custom spatial index and graph pathfinding, predicts arrival time with a small ML model, and streams live positions to clients over WebSockets. It is the same class of problem HERE, Uber and delivery platforms solve at scale.",
+why:["Real data structures, not framework glue. The Quadtree, Dijkstra, A* and LRU cache are hand-written, each with the reasoning for why that structure beat the obvious alternative.","A working ML integration. A trained GradientBoostingRegressor is served over FastAPI and called from Java for every candidate driver, with a graceful fallback to the graph estimate if the ML service is down."],
+flow:["A driver app pings its GPS location. driver-location-service writes it to Redis GEO (the source of truth) and publishes a Kafka event.","dispatch-service consumes the event and keeps an in-memory Quadtree in sync.","When an order arrives it runs a k-nearest-neighbour search over the Quadtree, then A* (Dijkstra as fallback) to compute the real road route for each candidate.","The ETA service adjusts each route for time-of-day traffic, and the driver with the best predicted arrival is assigned.","The assignment is published to Kafka, and tracking-service re-streams every later location ping to the rider over a STOMP WebSocket topic."],
+tbl:[["Data structures",[["Quadtree","In-memory spatial index for O(log n + k) nearest-driver queries, kept in sync via Kafka instead of hitting Redis GEO on every request."],["Dijkstra","Ground-truth shortest path over the road graph, O((V+E) log V) with a binary min-heap."],["A*","Haversine-guided search that explores far fewer nodes than Dijkstra. The primary pathfinder."],["LRU cache","HashMap plus doubly linked list, not LinkedHashMap. O(1) get/put, memoises repeated routes."]]],["Stack",[["Platform services","Java 11, Spring Boot 2.7, Spring Data Redis"],["ML service","Python 3.11, FastAPI, scikit-learn, pandas"],["Messaging","Apache Kafka"],["Geospatial","Redis GEOADD / GEOSEARCH"],["Real-time push","WebSocket + STOMP"],["Platform","Eureka, Config Server, Spring Cloud Gateway"],["Delivery","Docker Compose, Kubernetes with health probes"]]]],
+res:[["14.3×","faster spatial search at 50K drivers"],["0.97","R² of the ETA model"],["~2.35 min","ETA mean absolute error"],["7","services, Java and Python"]],
+notes:["Coarse-grained Quadtree locking. One read/write lock guards the tree, because lock contention is not the bottleneck at this dispatch volume. Revisit if the profile changes.","Quadtree state is per instance, so a fresh replica starts empty until it catches up on the Kafka topic. A Redis GEO cold-start fallback is the natural next step.","The road network is a synthetic grid so the system runs without a licensed map dataset. Swapping in HERE or OSM data means changing the graph loader, not the pathfinding."],
+repo:"routemind-platform"},
+
+{sum:"An autonomous financial intelligence agent. It ingests SEC filings, market prices and news, indexes them in a FAISS vector store, and runs a coordinated multi-agent pipeline that answers complex financial questions with a fully typed report covering risk, sentiment and portfolio signals.",
+flow:["Filings, prices and news are ingested through Kafka topics (finsight.filings, finsight.prices, finsight.news) and indexed into FAISS.","A question hits POST /analyze on the FastAPI backend.","LangGraph runs three agents over the retrieved context: risk, sentiment and portfolio.","Every agent output is validated by Pydantic schemas. Malformed JSON from the LLM triggers up to 3 retries with exponential backoff.","The React dashboard renders the typed FinalReport: a risk level and score, a sentiment score and outlook, and BUY / HOLD / SELL signals per ticker.","A daily Airflow DAG watches retrieval precision. If it drops below 75%, embeddings are retrained and the FAISS index is rebuilt automatically."],
+feats:["Dashboard metrics read live from the FAISS index and Prometheus counters","Agent status panel shows each agent's state while the request is in flight","Retrieval precision tracked per query type and logged to MLflow","Types flow end to end, from Pydantic models on the backend to React component props"],
+tbl:[["Stack",[["Orchestration","LangGraph multi-agent graph"],["LLM","Groq, chosen for speed across 3 to 5 LLM calls per query"],["Validation","Pydantic schemas, tenacity retries"],["Retrieval","FAISS (in-process, persisted to S3) with all-mpnet-base-v2 embeddings"],["Streaming","Apache Kafka"],["Backend","FastAPI"],["Frontend","React 18, Vite, Tailwind, Recharts"],["MLOps","Airflow, MLflow, Prometheus, Grafana"],["Infrastructure","Terraform, AWS EKS, GitHub Actions"]]]],
+res:[["<3 s","full risk, sentiment and portfolio report"],["3","cooperating agents"],["75%","precision floor that triggers retraining"],["<10 min","to rebuild the stack with terraform apply"]],
+notes:["FAISS over a managed vector database: no network hop, and at sub-100K vectors it beats a hosted service on latency.","The dashboard's live data feed simulates the Kafka stream. In production it would connect to a WebSocket that consumes the three topics."],
+repo:"finsight-AI-"},
+
+{sum:"A saga-orchestrated fund transfer platform modelled on bank payment rails. Every transfer is recorded in a hash-chained double-entry ledger, and Redis-backed idempotency keeps retries from moving money twice.",
+feats:["Saga-orchestrated transfers across services","Hash-chained double-entry ledger, so history is tamper-evident","Idempotency enforced with Redis","Eight microservices, modelled on JPMorgan-style payment infrastructure"],
+tbl:[["Stack",[["Services","Java, eight microservices"],["Pattern","Saga orchestration"],["Idempotency","Redis"],["Messaging","Kafka"]]]],
+res:[["8","microservices"],["Saga","orchestrated transfers"],["Redis","idempotency keys"]],
+repo:null},
+
+{sum:"A hand-rolled RESP2 Redis client plus two atomic rate limiting algorithms (sliding window log and token bucket), with a benchmark harness that proves the naive GET-then-INCR approach overshoots its limit under concurrency and the atomic Lua version does not. No client library anywhere.",
+feats:["RespClient.java: a minimal RESP2 client over raw sockets, no driver dependency","NaiveLimiter.java: GET-then-INCR, included on purpose to demonstrate the race condition","SlidingWindowLimiter.java: atomic sliding window log, a Lua script over a sorted set","TokenBucketLimiter.java: atomic token bucket, a Lua script over a hash","Benchmark.java: the race-condition proof plus throughput and latency, single-key contention and multi-key"],
+tbl:[["Results · 64 concurrent threads, local Redis 7",[["Naive counter, one hot key","1,024 of 1,000 admitted: 2.4% overshoot"],["Atomic sliding window, one hot key","1,000 of 1,000 admitted: 0% overshoot"],["Sliding window, 3,200 keys","43,500 req/s · p50 1.4 ms · p99 2.5 ms"],["Token bucket, 3,200 keys","42,900 req/s · p50 1.4 ms · p99 2.8 ms"]]]],
+res:[["43,500","req/s at p99 2.5 ms"],["0%","overshoot, versus 2.4% naive"],["64","concurrent threads in the benchmark"]],
+repo:"rate-limiter",demo:true},
+
+{sum:"A Merkle-tree key transparency log paired with a hash-chained audit log, so any change to a published key can be proven, and checked by an independent Python verifier.",
+feats:["Merkle-tree key transparency log","Hash-chained audit log","Independent verifier written in Python (FastAPI), separate from the Java service","15 of 15 tests passing"],
+tbl:[["Stack",[["Service","Java 21, Spring Boot"],["Verifier","Python, FastAPI"]]]],
+res:[["15/15","tests passing"],["2","languages, so the verifier is independent"]],
+repo:null},
+
+{sum:"An event-driven system that ingests financial transactions, scores them for fraud risk in real time, and routes suspicious activity to an alerting pipeline. It follows the pattern used by fintechs such as Wise, Monzo and Checkout.com for transaction monitoring.",
+why:["Decoupling: ingestion should not block on scoring latency.","Independent scaling: fraud scoring and transaction intake have very different load profiles.","Auditability: Kafka gives a durable, replayable log of every transaction and alert.","Extensibility: a future ML scorer or data-lake sink can subscribe to the same topics."],
+flow:["A transaction is submitted over REST and persisted.","It is published to Kafka.","fraud-detection-service scores it against the rule engine.","If the score crosses the threshold, an alert is persisted and published to a second topic.","notification-service consumes it and dispatches simulated SMS, email or compliance-queue notifications by severity."],
+tbl:[["Fraud rules",[["Amount threshold","Flags transactions above a configurable ceiling"],["High-risk merchants","Crypto exchanges, gambling, money transfer, precious metals"],["Geo risk","Unresolved or high-risk country codes"],["Velocity / burst","N or more transactions from one account inside a rolling window"]]],["Stack",[["Runtime","Java 11, Spring Boot 2.7 (Java 8 compatible)"],["Messaging","Apache Kafka"],["Persistence","PostgreSQL (H2 locally), Spring Data JPA"],["Platform","Eureka, Config Server, Spring Cloud Gateway"],["Delivery","Docker Compose, Kubernetes with probes and resource limits"],["Observability","Spring Actuator, Prometheus endpoint"]]]],
+res:[["6","services on Kubernetes"],["4","explainable fraud rules"],["3","replicas on the hot path"]],
+notes:["Rule-based on purpose. In fincrime work an analyst has to say why a transaction was flagged, which a raw model score cannot do alone.","Velocity counting is in-memory per instance here. A multi-replica deployment would move it to Redis.","Next iteration: an XGBoost model on the same features, with the rules kept as a fallback and explainability layer, backed by a feature store."],
+repo:"finguard"},
+
+{sum:"A sequential transaction risk-decisioning environment for RL post-training, built to the OpenEnv specification. Existing OpenEnv finance environments cover stock trading and financial document QA, but nothing covered transaction-level risk decisions, the core loop of a payments fraud team. This fills that gap.",
+feats:["The agent sees synthetic transactions one at a time and picks APPROVE, FLAG, ESCALATE or BLOCK","Each transaction carries engineered risk features: amount, z-score against account history, 1h and 24h velocity, new merchant or device, cross-border flag, time of day, account age","Fraud and legitimate transactions come from overlapping feature distributions, so the task rewards real pattern learning over simple thresholds","Configurable episode_length (default 200) and fraud_rate (default 0.12)","All tests passing"],
+tbl:[["Reward design",[["True positive","+1.0 · fraud correctly flagged, escalated or blocked"],["True negative","+0.1 · legitimate transaction approved"],["False positive","−0.5 · legitimate transaction wrongly stopped"],["False negative","−3.0 · fraud approved"],["Escalation","additional −0.1 on top of the above"]]]],
+res:[["PR #926","merged into OpenEnv"],["200","transactions per episode"],["12%","default fraud rate"],["−3.0","cost of a missed fraud"]],
+notes:["The reward is asymmetric on purpose, matching how payment risk teams weigh outcomes. Missing fraud costs six times more than a false alarm.","ESCALATE adds a fixed cost without adding evidence, so it always pays less than FLAG or BLOCK. The environment does not model a human investigation or later outcomes."],
+repo:"https://github.com/huggingface/OpenEnv/tree/main/envs/fraud_triage_env",links:[["Pull request #926","https://github.com/huggingface/OpenEnv/pull/926"]],full:true},
+
+{sum:"A two-stage recommendation engine: FAISS retrieves a broad candidate set quickly, then a LightGBM ranker orders it. The same retrieve-then-rank shape used by production recommendation systems.",
+feats:["Stage one: FAISS vector retrieval for fast candidate generation","Stage two: LightGBM ranking over those candidates"],
+tbl:[["Stack",[["Retrieval","FAISS"],["Ranking","LightGBM"],["Language","Python"]]]],
+res:[["2-stage","retrieve, then rank"]],
+repo:null},
+
+{sum:"An intelligent payment routing system that dynamically selects the best gateway for each transaction using machine learning, with retry logic and real-time analytics. XGBoost picks the gateway, and an LLM explains every routing decision in plain language.",
+feats:["ML service that scores gateways per transaction with XGBoost","Retry logic when a gateway fails","Real-time analytics on routing outcomes","Routing engine that applies the model's choice","Kafka carrying the transaction stream","Simulator that generates transaction traffic","Dashboard for watching routing decisions","Dockerised, with Postgres persistence"],
+tbl:[["Components",[["ML_Service","XGBoost gateway model"],["Routing_Engine","Per-transaction gateway selection"],["Kafka","Event streaming"],["Simulator","Synthetic transaction traffic"],["dashboard","Live view of decisions"],["docker + Postgres","Local stack and persistence"]]]],
+res:[["XGBoost","gateway selection"],["LLM","explains each decision"]],
+repo:"smart-payment-routing-system"},
+
+{sum:"An open-source ML toolkit for transaction data, with anomaly detection, next-month spend forecasting and category classification. It uses the same model families Monzo describes in its public ML stack write-up: XGBoost, LightGBM, scikit-learn and Python microservices.",
+feats:["Reuse over rebuild: feature engineering, training and prediction in one coherent package","Analytical features (rolling aggregations) separated from operational features (real-time amounts and time)","Ships with tests, examples and a CI workflow"],
+tbl:[["Modules",[["MonzoDataLoader","Fetch and normalise transactions via the Monzo API"],["FeatureEngineer","Time, amount, rolling and merchant features"],["AnomalyDetector","Isolation Forest + Z-score"],["SpendingPredictor","XGBoost, next-month spend per category"],["CategoryClassifier","LightGBM + TF-IDF, labels unlabelled transactions"]]],["Monzo stack mapping",[["BigQuery SQL features","FeatureEngineer.transform()"],["Training jobs","model.fit()"],["Batch prediction","predictor.predict_next_month()"],["Real-time microservice","detector.predict()"],["Grafana monitoring","model.metrics"]]]],
+res:[["3","models: anomaly, spend, category"],["XGBoost","+ LightGBM + Isolation Forest"]],
+notes:["Independent project, not affiliated with or endorsed by Monzo Bank."],
+repo:"monzo-txn-ml"}
+];
+
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const pm=document.createElement('div');pm.id='pm';pm.hidden=true;
+pm.innerHTML='<div class="pp" role="dialog" aria-modal="true" aria-labelledby="pttl" tabindex="-1"><button class="px" aria-label="Close">✕</button><div class="pc"></div></div>';document.body.appendChild(pm);
+let pcur=-1,pback=null;
+function pBody(i){const p=P[i],d=D[i],repo=d.repo?(/^https?:/.test(d.repo)?d.repo:GH+'/'+d.repo):GH;let h='';
+h+=`<span class="mono">${p[0]} · ${esc(p[1])}</span><h2 id="pttl">${esc(p[2])}</h2><p class="ps">${esc(d.sum)}</p>`;
+h+=`<div class="pa"><a class="btn solid" href="${repo}" target="_blank" rel="noopener">${d.repo?(d.full?'View on GitHub ↗':'Source on GitHub ↗'):'GitHub profile ↗'}</a>`;
+(d.links||[]).forEach(l=>{h+=`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a>`});
+if(d.demo)h+=`<a class="btn" href="#demos" data-pgo="lab">Try the demo</a>`;
+if(i===0)h+=`<a class="btn" href="#demos" data-pgo="lab">Try the demo</a>`;
+h+='</div>';
+if(d.res)h+=`<div class="pr">${d.res.map(r=>`<div><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('')}</div>`;
+if(d.why)h+=`<h4>Why it exists</h4><ul>${d.why.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+if(d.flow)h+=`<h4>How it works</h4><ol>${d.flow.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`;
+if(d.feats)h+=`<h4>${d.full?'What it does':'Highlights'}</h4><ul>${d.feats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+(d.tbl||[]).forEach(t=>{h+=`<h4>${esc(t[0])}</h4><table class="pt2"><tbody>${t[1].map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table>`});
+if(d.notes)h+=`<h4>Trade-offs, stated plainly</h4><ul>${d.notes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+if(!d.repo)h+=`<p class="soon">Repository is not public yet. The full write-up will live in its README.</p>`;
+const n=P.length;h+=`<div class="pn"><button data-d="-1">← ${esc(P[(i+n-1)%n][2])}</button><button data-d="1" style="text-align:right">${esc(P[(i+1)%n][2])} →</button></div>`;
+return h}
+function pOpen(i){pcur=i;const w=pm.querySelector('.pp');pm.querySelector('.pc').innerHTML=pBody(i);if(pm.hidden){pback=document.activeElement;pm.hidden=false;document.body.style.overflow='hidden'}pm.scrollTop=0;w.scrollTop=0;pm.querySelector('.px').focus({preventScroll:true})}
+function pClose(){if(pm.hidden)return;pm.hidden=true;document.body.style.overflow='';pcur=-1;if(pback&&pback.focus)pback.focus({preventScroll:true})}
+pm.addEventListener('click',e=>{if(e.target===pm||e.target.closest('.px'))return pClose();const b=e.target.closest('[data-d]');if(b){const n=P.length;return pOpen((pcur+ +b.dataset.d+n)%n)}
+const g=e.target.closest('[data-pgo]');if(g){pClose();const nv=document.querySelector(`.nv a[data-go="${g.dataset.pgo}"]`);if(nv){e.preventDefault();nv.click()}}});
+addEventListener('keydown',e=>{if(pm.hidden)return;if(e.key==='Escape')pClose();else if(e.key==='ArrowRight'&&!e.target.closest('input'))pOpen((pcur+1)%P.length);else if(e.key==='ArrowLeft'&&!e.target.closest('input'))pOpen((pcur+P.length-1)%P.length);
+else if(e.key==='Tab'){const f=[...pm.querySelectorAll('a[href],button')];if(!f.length)return;const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}});
+/* open on tap: pointer capture on the track retargets click events, so detect the tap on pointerup */
+let tapC=null,tapX=0,tapY=0;
+track.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button)return;tapC=e.target.closest('.card');tapX=e.clientX;tapY=e.clientY},true);
+track.addEventListener('pointerup',e=>{const c=tapC;tapC=null;if(!c)return;if(Math.hypot(e.clientX-tapX,e.clientY-tapY)>8)return;pOpen(+c.dataset.i)},true);
+track.addEventListener('pointercancel',()=>{tapC=null});
+/* keyboard (Enter on a focused card) and any click that still reaches a card */
+track.addEventListener('click',e=>{const c=e.target.closest('.card');if(c)e.preventDefault();if(!c||e.defaultPrevented&&e.detail>0)return;if(pm.hidden||pcur!==+c.dataset.i)pOpen(+c.dataset.i)});
+pm.addEventListener('pointerover',e=>{const t=e.target.closest('a,button');$('#cur').classList.toggle('big',!!t)});
 /* drag + inertia carousel */
 (function(){const wrap=$('#work');let x=0,v=0,down=false,sx=0,lx=0,moved=0,max=0;
 const calc=()=>{max=Math.max(0,track.scrollWidth-innerWidth)};calc();addEventListener('resize',calc);addEventListener('load',calc);
