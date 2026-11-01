@@ -258,6 +258,13 @@ html.js .prow.rv.in{opacity:1;transform:perspective(1000px) translateY(var(--ty,
 .gpa svg{width:92px;height:92px;transform:rotate(-90deg);flex:none}.gpa circle{fill:none;stroke-width:5;stroke-linecap:round}.gpa .tr{stroke:#222}.gpa .pr2{stroke:#fff;stroke-dasharray:100;stroke-dashoffset:100}.ecard.in .pr2{stroke-dashoffset:15.4;transition:stroke-dashoffset 1.8s .5s cubic-bezier(.2,.7,.2,1)}
 .gpa b{font:500 2.4rem/1 var(--mono);letter-spacing:-.05em;display:block}.gpa span{color:var(--mut);font-size:.82rem}
 @media(max-width:700px){.eg,.crg,.vl{grid-template-columns:1fr}}
+/* ===== living system map background (single canvas, cheap) ===== */
+canvas.sys{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.sys-v{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(5,5,5,.88) 0%,rgba(5,5,5,.5) 42%,rgba(5,5,5,0) 85%),radial-gradient(ellipse at 62% 48%,transparent 45%,rgba(5,5,5,.8))}
+/* zoom-out: smaller name, more breathing room, content centred up to 1400px */
+@media(min-width:701px){section,#work,#nxt{padding-inline:max(clamp(1.5rem,6vw,6rem),calc((100vw - 1400px)/2))}}
+h1{font-size:clamp(2.6rem,8.2vw,7.2rem);letter-spacing:-.05em}
+body{font-size:16px}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -600,12 +607,63 @@ if(M=='funnel')for(k=0;k<9;k++)s+=`<path d='M${8+k*18} 6L${80+(k-4)*5} 74'/>`;
 if(M=='paths')for(k=0;k<5;k++)s+=`<path d='M6 ${10+k*14}C60 ${r(k)*70} 100 ${r(k+9)*70} 154 ${10+r(k+4)*60}'/>`;
 if(M=='stack')for(k=0;k<4;k++)s+=`<ellipse cx='80' cy='${22+k*13}' rx='48' ry='8'/>`;
 return `<svg class='art' viewBox='0 0 160 80' aria-hidden='true'>${s}</svg>`}
-/* hero: live quadtree that subdivides around the cursor */
-(function(){const h=$('.hero'),c=document.createElement('canvas');c.id='hc';h.prepend(c);const x=c.getContext('2d');let W=0,H=0,mx=.7,my=.4,tx=.7,ty=.4,t=0,act=0;
+/* hero quadtree squares: removed */
+(function(){return;const h=$('.hero'),c=document.createElement('canvas');c.id='hc';h.prepend(c);const x=c.getContext('2d');let W=0,H=0,mx=.7,my=.4,tx=.7,ty=.4,t=0,act=0;
 const rs=()=>{const d=Math.min(devicePixelRatio||1,1.5);W=c.width=h.clientWidth*d;H=c.height=h.clientHeight*d};rs();addEventListener('resize',rs);
 addEventListener('pointermove',e=>{const r=h.getBoundingClientRect();tx=(e.clientX-r.left)/r.width;ty=(e.clientY-r.top)/r.height;act=1});
 function sub(a,b,s,d){if(d<7&&Math.hypot(a+s/2-mx*W,b+s/2-my*H)<s*1.15){s/=2;sub(a,b,s,d+1);sub(a+s,b,s,d+1);sub(a,b+s,s,d+1);sub(a+s,b+s,s,d+1)}else x.strokeRect(a+.5,b+.5,s-1,s-1)}
 (function f(){if(!RM&&(h.classList.contains('off')||h.getBoundingClientRect().bottom<0)){requestAnimationFrame(f);return}t+=.008;if(!act){tx=.5+.32*Math.cos(t*1.3);ty=.5+.3*Math.sin(t)}mx+=(tx-mx)*.08;my+=(ty-my)*.08;x.clearRect(0,0,W,H);x.strokeStyle='rgba(255,255,255,.22)';x.lineWidth=1;const s=Math.max(W,H)/4||1;if(W)for(let a=0;a<W;a+=s)for(let b=0;b<H;b+=s)sub(a,b,s,0);if(!RM)requestAnimationFrame(f)})()})();
+/* living system map: projects + stack as a floating architecture graph with data packets (one canvas) */
+(function(){const h=$('.hero');if(!h)return;const SW=3400,SH=1800,hubs=P.slice(0,9);
+const hp=hubs.map((_,i)=>{const c=i%5,r=i/5|0;return[420+c*640+(r?320:0),470+r*820]});
+const techs={};hubs.forEach((p,i)=>p[6].forEach(t=>{(techs[t]=techs[t]||[]).push(i)}));
+const CONC={'Microservices':[0,2,5,8],'Data Structures':[0,3,4],'Algorithms':[0,4,6,7],'Distributed Systems':[2,3,4],'System Design':[0,1,5],'Concurrency':[3,2],'Java':[0,2,3,5],'Python':[1,6,7,8]};
+Object.entries(CONC).forEach(([t,L])=>{L=L.filter(i=>i<hubs.length);if(!L.length)return;const q=techs[t]||(techs[t]=[]);L.forEach(i=>{if(!q.includes(i))q.push(i)})});
+const used=hubs.map(()=>0),tp={},hash=s=>{let a=0;for(const ch of s)a=(a*31+ch.charCodeAt(0))>>>0;return a};
+Object.entries(techs).forEach(([t,L])=>{const q=hash(t);let x,y;
+if(L.length>1){x=L.reduce((a,i)=>a+hp[i][0],0)/L.length+((q%240)-120);y=L.reduce((a,i)=>a+hp[i][1],0)/L.length+(((q>>8)%240)-120)}
+else{const i=L[0],k=used[i]++,a=k*1.25+i*.7+.4,rr=300+(q%60);x=hp[i][0]+Math.cos(a)*rr*1.25;y=hp[i][1]+Math.sin(a)*rr}
+tp[t]=[Math.max(120,Math.min(SW-120,x)),Math.max(120,Math.min(SH-120,y))]});
+{const K=Object.keys(tp);for(let it=0;it<120;it++){for(let i=0;i<K.length;i++){const A=tp[K[i]];for(let j=i+1;j<K.length;j++){const B=tp[K[j]],dx=B[0]-A[0],dy=B[1]-A[1],mx=(K[i].length+K[j].length)*9+70,my=100;if(Math.abs(dx)<mx&&Math.abs(dy)<my){const px=mx-Math.abs(dx),py=my-Math.abs(dy);if(px<py){const m=(dx>=0?1:-1)*px/2;A[0]-=m;B[0]+=m}else{const m=(dy>=0?1:-1)*py/2;A[1]-=m;B[1]+=m}}}
+hp.forEach(H=>{const dx=A[0]-H[0],dy=A[1]-H[1];if(Math.abs(dx)<(K[i].length*9+250)&&Math.abs(dy)<260){if(Math.abs(dx)/(K[i].length*9+250)>Math.abs(dy)/260)A[0]+=(dx>=0?1:-1)*8;else A[1]+=(dy>=0?1:-1)*8}});A[0]=Math.max(120,Math.min(SW-120,A[0]));A[1]=Math.max(120,Math.min(SH-120,A[1]))}}}
+const cols=['#7aa2ff','#b58cff','#5fe3c0','#ffb86b','#ff7aa8','#8be9fd'];
+const edges=[];hubs.forEach((p,i)=>p[6].forEach(t=>{const e=edges.length;edges.push({a:hp[i],b:tp[t],c:cols[i%cols.length],d:5+(e*7%6),ph:(e*.173)%1,rev:e%2})}));
+const cv=document.createElement('canvas');cv.className='sys';cv.setAttribute('aria-hidden','true');const vg=document.createElement('div');vg.className='sys-v';
+h.insertBefore(vg,h.firstChild);h.insertBefore(cv,h.firstChild);const x=cv.getContext('2d');
+let dpr=1,W=0,H=0,k=.5,ss=1,nodes=[],glow={},px=0,py=0,tx=0,ty=0;
+const TH=-30*Math.PI/180,TL=Math.cos(58*Math.PI/180),cs=Math.cos(TH),sn=Math.sin(TH);
+const rr=(g,X,Y,w,hh,r)=>{g.beginPath();g.moveTo(X+r,Y);g.arcTo(X+w,Y,X+w,Y+hh,r);g.arcTo(X+w,Y+hh,X,Y+hh,r);g.arcTo(X,Y+hh,X,Y,r);g.arcTo(X,Y,X+w,Y,r);g.closePath()};
+const FS="'Inter Tight',system-ui,sans-serif",FM="'JetBrains Mono',ui-monospace,monospace";
+function sprite(w,hh,draw){const c=document.createElement('canvas');c.width=Math.ceil(w*ss);c.height=Math.ceil(hh*ss);const g=c.getContext('2d');g.scale(ss,ss);draw(g);return c}
+function build(){nodes=[];glow={};
+cols.forEach(c=>{glow[c]=sprite(60,60,g=>{const r=g.createRadialGradient(30,30,0,30,30,30);r.addColorStop(0,'#fff');r.addColorStop(.18,c);r.addColorStop(.45,c+'66');r.addColorStop(1,c+'00');g.fillStyle=r;g.fillRect(0,0,60,60)})});
+Object.entries(tp).forEach(([t,p])=>{const cc=t in CONC,w=t.length*(cc?20:17)+64,hh=cc?72:64;const spr=sprite(w,hh,g=>{rr(g,2,2,w-4,hh-4,30);g.fillStyle=cc?'rgba(26,28,44,.97)':'rgba(14,16,28,.95)';g.fill();g.strokeStyle=cc?'rgba(255,255,255,.7)':'rgba(140,165,255,.45)';g.lineWidth=cc?3:2;g.stroke();g.font=cc?`600 32px ${FM}`:`500 28px ${FM}`;g.fillStyle=cc?'#fff':'#cdd6ff';g.textBaseline='middle';g.textAlign='center';g.fillText(t,w/2,hh/2+1)});nodes.push({x:p[0],y:p[1],w,h:hh,spr,lift:cc?22:10,sh:0})});
+hubs.forEach((p,i)=>{const c=cols[i%cols.length],W2=440,H2=250,pad=50;const spr=sprite(W2+pad*2,H2+pad*2,g=>{g.save();g.shadowColor=c+'99';g.shadowBlur=40;rr(g,pad,pad,W2,H2,28);g.fillStyle='#0d0f18';g.fill();g.restore();
+const gr=g.createLinearGradient(0,pad,0,pad+H2);gr.addColorStop(0,'#171a26');gr.addColorStop(1,'#090a10');rr(g,pad,pad,W2,H2,28);g.fillStyle=gr;g.fill();g.strokeStyle=c+'88';g.lineWidth=2;g.stroke();
+g.textBaseline='alphabetic';g.textAlign='left';g.font=`400 21px ${FM}`;g.fillStyle=c;g.fillText((p[0]+' · '+p[1]).toUpperCase(),pad+34,pad+58);
+g.font=`600 50px ${FS}`;g.fillStyle='#fff';let nm=p[2];while(g.measureText(nm).width>W2-68&&nm.length>4)nm=nm.slice(0,-2);g.fillText(nm===p[2]?nm:nm+'…',pad+34,pad+122);
+g.font=`500 54px ${FM}`;g.fillText(p[4],pad+34,pad+196);g.font=`400 20px ${FM}`;g.fillStyle='#8b93b3';let sb=p[5];while(g.measureText(sb).width>W2-68&&sb.length>4)sb=sb.slice(0,-2);g.fillText(sb,pad+34,pad+228)});
+nodes.push({x:hp[i][0],y:hp[i][1],w:W2+pad*2,h:H2+pad*2,spr,lift:46,sh:1})});
+nodes.sort((a,b)=>(sn*a.x+cs*a.y)-(sn*b.x+cs*b.y))}
+function size(){dpr=Math.min(devicePixelRatio||1,1.5);const w=h.clientWidth,hh=h.clientHeight;if(!w||!hh)return;W=cv.width=Math.round(w*dpr);H=cv.height=Math.round(hh*dpr);k=w<700?.3:Math.max(.4,Math.min(.62,w/2500));ss=k*dpr*1.5;build()}
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(size,150)});
+const a0=k=>k;function frame(now){const w=W/dpr,hh=H/dpr;const kk=k,a=kk*cs,b=kk*TL*sn,c=-kk*sn,d=kk*TL*cs;
+const t=now/1000,ox=w*.62+Math.sin(t/38)*w*.16+px,oy=hh*.47+Math.cos(t/47)*hh*.05+py;const cx=SW/2,cy=SH/2;
+const P=(X,Y)=>[ox+a*(X-cx)+c*(Y-cy),oy+b*(X-cx)+d*(Y-cy)];
+x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,W,H);
+x.setTransform(a*dpr,b*dpr,c*dpr,d*dpr,(ox-a*cx-c*cy)*dpr,(oy-b*cx-d*cy)*dpr);
+x.strokeStyle='rgba(140,165,255,.06)';x.lineWidth=1.5/kk;x.beginPath();for(let X=0;X<=SW;X+=110){x.moveTo(X,0);x.lineTo(X,SH)}for(let Y=0;Y<=SH;Y+=110){x.moveTo(0,Y);x.lineTo(SW,Y)}x.stroke();
+x.strokeStyle='rgba(140,165,255,.3)';x.lineWidth=2.4/kk;x.beginPath();edges.forEach(e=>{x.moveTo(e.a[0],e.a[1]);x.lineTo(e.b[0],e.b[1])});x.stroke();
+nodes.forEach(n=>{if(n.sh){x.save();x.translate(n.x,n.y);x.scale(1,1);x.fillStyle='rgba(0,0,0,.45)';x.beginPath();x.ellipse(0,0,n.w/2-40,n.h/2-40,0,0,7);x.fill();x.restore()}});
+nodes.forEach(n=>{const m=P(n.x,n.y);x.setTransform(a*dpr,b*dpr,c*dpr,d*dpr,m[0]*dpr,(m[1]-n.lift)*dpr);x.drawImage(n.spr,-n.w/2,-n.h/2,n.w,n.h)});
+x.setTransform(dpr,0,0,dpr,0,0);
+edges.forEach(e=>{let u=((t/e.d)+e.ph)%1;if(e.rev)u=1-u;const p=P(e.a[0]+(e.b[0]-e.a[0])*u,e.a[1]+(e.b[1]-e.a[1])*u),v=e.rev?1-u:u;x.globalAlpha=Math.min(1,v*7,(1-v)*7);const s=34*Math.max(.7,kk*1.6);x.drawImage(glow[e.c],p[0]-s/2,p[1]-s/2-6,s,s)});x.globalAlpha=1}
+size();
+const vis=()=>!h.classList.contains('off')&&!document.hidden&&h.getBoundingClientRect().bottom>0;
+if(RM){document.fonts&&document.fonts.ready.then(()=>{size();frame(0)});return}
+if(matchMedia('(pointer:fine)').matches)h.addEventListener('pointermove',v=>{const r=h.getBoundingClientRect();tx=-((v.clientX-r.left)/r.width-.5)*60;ty=-((v.clientY-r.top)/r.height-.5)*36},{passive:true});
+document.fonts&&document.fonts.ready.then(size);
+(function loop(now){requestAnimationFrame(loop);if(!W||!vis())return;px+=(tx-px)*.05;py+=(ty-py)*.05;frame(now)})(0)})();
 /* icons + stagger injected into the static sections */
 $$('.stats div').forEach((d,i)=>d.insertAdjacentHTML('afterbegin',ic(['swap','hotel','target','bolt'][i],'si')));
 $$('.cta a').forEach((a,i)=>a.insertAdjacentHTML('beforeend',ic(['arrow','mail','download'][i])));
