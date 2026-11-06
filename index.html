@@ -115,9 +115,9 @@ footer{text-align:center;padding:2rem 1rem 3rem;color:var(--dim);font:400 .75rem
 @media(max-width:700px){.nv{gap:.8rem}.nv a{font-size:.84rem;gap:.35rem}.nv svg{width:14px;height:14px}}
 .pt{float:right;width:clamp(210px,24vw,290px);margin:0 0 1.6rem 2.4rem;position:relative}
 .pt .fr{position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0b0b0b}
-.pt img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block;filter:grayscale(1) contrast(1.18) brightness(.7);transform:scale(1.04);transition:filter .6s,transform .8s cubic-bezier(.2,.7,.2,1)}
-.pt:hover img{filter:grayscale(1) contrast(1.1) brightness(.95);transform:scale(1)}
-.pt .fr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,transparent 30%,rgba(5,5,5,.78) 88%),linear-gradient(transparent 55%,#050505);pointer-events:none}
+.pt img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block;filter:saturate(.92) contrast(1.06) brightness(.86);transform:scale(1.04);transition:filter .6s,transform .8s cubic-bezier(.2,.7,.2,1)}
+.pt:hover img{filter:saturate(1.05) contrast(1.04) brightness(1);transform:scale(1)}
+.pt .fr::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 48%,rgba(5,5,5,.55) 92%),linear-gradient(transparent 68%,rgba(5,5,5,.85));pointer-events:none}
 .pt figcaption{margin-top:.8rem}.stats{clear:both}
 @media(max-width:700px){.pt{float:none;width:min(280px,70vw);margin:0 0 2rem}}
 #nxt a{font:500 clamp(1.1rem,2.4vw,1.6rem) var(--sans);letter-spacing:-.01em}#nxt a:hover{letter-spacing:.01em}
@@ -265,12 +265,56 @@ canvas.sys{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-e
 @media(min-width:701px){section,#work,#nxt{padding-inline:max(clamp(1.5rem,6vw,6rem),calc((100vw - 1400px)/2))}}
 h1{font-size:clamp(2.6rem,8.2vw,7.2rem);letter-spacing:-.05em}
 body{font-size:16px}
+/* ===== v3: live system, case studies, architecture diagrams, project filter ===== */
+.fl{display:flex;flex-wrap:wrap;gap:.6rem;margin:-1.2rem 0 2.2rem}
+.fl button{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.1rem;border:1px solid #2a2a2a;border-radius:99px;background:none;color:#fff;font:500 .9rem var(--sans);transition:background .3s,color .3s,border-color .3s,transform .3s}
+.fl button small{font:400 .7rem var(--mono);color:var(--mut);transition:color .3s}
+.fl button:hover{border-color:#fff;transform:translateY(-2px)}
+.fl button.on{background:#fff;color:#000;border-color:#fff}.fl button.on small{color:#555}
+/* live system */
+#sys .lead{color:#a8a8a8;max-width:760px;margin:-1.4rem 0 2.4rem}
+.sysb{border:1px solid var(--line);border-radius:20px;background:var(--card);padding:1.3rem}
+#sc{display:block;width:100%;border:1px solid var(--line);border-radius:12px;background:#000}
+.sysb .dc{margin-bottom:1rem}.sysb .dc#sk{margin:1rem 0 0}
+.dc .btn.pri{background:#fff;color:#000;border-color:#fff}.dc .btn.pri:hover{background:transparent;color:#fff}
+.dc .btn.dead{border-color:#ff6b6b;color:#ff6b6b}.dc .btn.dead:hover{background:#ff6b6b;color:#000}
+.sh{margin:-.2rem 0 1rem;text-transform:none;letter-spacing:0;font-size:.78rem}
+.sx{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:1rem}
+.sx div{background:#0a0a0a;padding:.9rem 1rem}.sx b{display:block;font:500 1.6rem var(--mono);letter-spacing:-.04em;transition:color .3s}.sx span{color:var(--mut);font-size:.74rem}
+.sx div.hot b{color:#ffb86b}
+.sled{margin-top:1rem;text-transform:none;letter-spacing:0;font-size:.78rem;color:#7cffb2}
+.sl{margin-top:.8rem;min-height:11rem;text-transform:none;letter-spacing:0;font-size:.78rem}
+.sl div{padding:.22rem 0;animation:popin .35s;color:#b5b5b5}.sl .x{color:#ff6b6b}.sl .ok{color:#7cffb2}.sl .am{color:#ffb86b}
+/* architecture diagrams */
+.arch{border:1px solid var(--line);border-radius:18px;background:radial-gradient(ellipse at 50% 120%,rgba(130,150,255,.14),transparent 70%),#080808;padding:1rem;overflow-x:auto}
+.arch svg{display:block;width:100%;min-width:760px;height:auto}
+@keyframes aflow{to{stroke-dashoffset:-90}}
+@keyframes nbr{0%,100%{stroke:#3b4166}50%{stroke:#6c78b8}}
+.arch .ed{stroke:#2f3558;stroke-width:1.4;fill:none;stroke-dasharray:3 6;animation:aflow 7s linear infinite}
+.arch .nb{fill:#0d0f18;stroke:#3b4166;stroke-width:1.2;animation:nbr 4.5s ease-in-out infinite;animation-delay:calc(var(--k)*.45s)}
+.arch .an:hover .nb{stroke:#fff;animation:none}
+.arch .nt{fill:#fff;font:600 12.5px 'JetBrains Mono',ui-monospace,monospace;text-anchor:middle}
+.arch .ns{fill:#7d86a8;font:400 9.5px 'JetBrains Mono',ui-monospace,monospace;text-anchor:middle}
+.arch .el{fill:#8b93b3;font:400 9.5px 'JetBrains Mono',ui-monospace,monospace;text-anchor:middle}
+.archl{margin:.9rem 0 0;font-size:.72rem;text-transform:none;letter-spacing:.02em}
+/* case studies */
+.csq{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem}
+.csi .mono{display:block;margin-bottom:.7rem}.csi p{margin:0;color:#c4c4c4;font-size:1.02rem;line-height:1.65}
+.csg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+.dcard{border:1px solid var(--line);border-radius:16px;padding:1.3rem 1.4rem;background:#0b0b0b}
+.dcard:hover{border-color:#444}
+.dcard h5{font:500 1.15rem/1.25 var(--sans);letter-spacing:-.02em;color:#fff;margin:.3rem 0 .9rem}
+.dcard p{margin:.4rem 0;font-size:.92rem;line-height:1.55;color:#b5b5b5}
+.dcard p b{display:inline-block;min-width:4.8rem;font:400 .66rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.dcard p.cz b{color:#7cffb2}
+@media(max-width:700px){.sx{grid-template-columns:repeat(3,1fr)}.csq,.csg{grid-template-columns:1fr}}
+@media(max-width:520px){.nv a{font-size:0;gap:0}.nv a svg{width:20px;height:20px}.nv{gap:1.1rem}}
 </style>
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 <div id="bar"></div><div id="glow"></div><div id="cur"></div>
-<nav class='top mono'><a href='#' data-go='' class='lg' aria-label='Home'><svg width='22' height='22' viewBox='0 0 22 22' fill='none' stroke='#fff'><rect x='.5' y='.5' width='21' height='21'/><path d='M11 .5v21M.5 11h21M11 5.7h10.5'/><circle cx='5.5' cy='16' r='1.6' fill='#fff'/></svg></a><span class='nv'><a href='#work' data-go='work'><svg viewBox='0 0 24 24'><rect x='3' y='7' width='18' height='13' rx='2'/><path d='M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M3 13h18'/></svg>Work</a><a href='#lab' data-go='lab'><svg viewBox='0 0 24 24'><path d='M9 3h6M10 3v6l-5 9a2 2 0 001.8 3h10.4A2 2 0 0019 18l-5-9V3M7.5 15h9'/></svg>Lab</a><a href='#story' data-go='story'><svg viewBox='0 0 24 24'><path d='M4 4.5A2.5 2.5 0 016.5 2H20v17H6.5A2.5 2.5 0 004 21.5zM4 19.5A2.5 2.5 0 016.5 17H20'/></svg>Story</a><a href='#contact' data-go='contact'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14' rx='2'/><path d='M3 7l9 6 9-6'/></svg>Contact</a><a href='Atharv_Satpute_CV.pdf' download='Atharv_Satpute_CV.pdf' data-cv><svg viewBox='0 0 24 24'><path d='M12 4v11M7 11l5 5 5-5M5 20h14'/></svg><span class='cvt'>CV</span></a></span><a href='#' id='pk'>⌘K</a></nav>
+<nav class='top mono'><a href='#' data-go='' class='lg' aria-label='Home'><svg width='22' height='22' viewBox='0 0 22 22' fill='none' stroke='#fff'><rect x='.5' y='.5' width='21' height='21'/><path d='M11 .5v21M.5 11h21M11 5.7h10.5'/><circle cx='5.5' cy='16' r='1.6' fill='#fff'/></svg></a><span class='nv'><a href='#work' data-go='work'><svg viewBox='0 0 24 24'><rect x='3' y='7' width='18' height='13' rx='2'/><path d='M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2M3 13h18'/></svg>Work</a><a href='#lab' data-go='lab'><svg viewBox='0 0 24 24'><path d='M9 3h6M10 3v6l-5 9a2 2 0 001.8 3h10.4A2 2 0 0019 18l-5-9V3M7.5 15h9'/></svg>Lab</a><a href='#system' data-go='system'><svg viewBox='0 0 24 24'><path d='M3 12h4l3-8 4 16 3-8h4'/></svg>Live</a><a href='#story' data-go='story'><svg viewBox='0 0 24 24'><path d='M4 4.5A2.5 2.5 0 016.5 2H20v17H6.5A2.5 2.5 0 004 21.5zM4 19.5A2.5 2.5 0 016.5 17H20'/></svg>Story</a><a href='#contact' data-go='contact'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14' rx='2'/><path d='M3 7l9 6 9-6'/></svg>Contact</a><a href='Atharv_Satpute_CV.pdf' download='Atharv_Satpute_CV.pdf' data-cv><svg viewBox='0 0 24 24'><path d='M12 4v11M7 11l5 5 5-5M5 20h14'/></svg><span class='cvt'>CV</span></a></span><a href='#' id='pk'>⌘K</a></nav>
 
 <main id="top">
 <section class="hero">
@@ -306,13 +350,41 @@ body{font-size:16px}
   <div class="hd">
     <div><span class="mono rv">02 — Selected work</span><h2 class="rv" style="margin-bottom:3rem">Things I built,<br>one project at a time.</h2></div>
       </div>
-  <div class="plist" id="track"></div>
+  <div class="fl rv" id="fl"></div><div class="plist" id="track"></div>
 </section>
 
 <section id="demos">
   <span class="mono rv">03 — Live demos</span><h2 class="rv">Run the algorithms.</h2>
   <div class="demo rv"><div class="dh"><div><span class="mono">RouteMind · Quadtree nearest-driver search</span><p>Click to drop drivers. Switch to dispatch mode and move the pointer: the quadtree prunes whole quadrants while brute force scans every driver.</p></div><div class="dc"><button class="btn" id="q200">+ 200 drivers</button><button class="btn" id="qm">Mode: dispatch</button><button class="btn" id="qx">Clear</button></div></div><canvas id="qc" width="900" height="420" aria-label="Interactive quadtree demo"></canvas><div class="mono" id="qs"></div></div>
   <div class="demo rv"><div class="dh"><div><span class="mono">Distributed Rate Limiter · Token bucket</span><p>Capacity 10, refilling 3 tokens a second. The real limiter does this as an atomic Lua script in Redis; this copy runs in your browser.</p></div><div class="dc"><button class="btn" id="rf">Fire request</button><button class="btn" id="rb">Burst ×25</button></div></div><div class="bkt"><i id="rbar"></i></div><div class="log" id="rlog"></div><div class="mono" id="rs"></div></div>
+</section>
+
+<section id="sys">
+  <span class="mono rv">03 — Live system</span><h2 class="rv">Break it. Watch it recover.</h2>
+  <p class="lead rv">A payments pipeline modelled on LedgerMesh and FinGuard: an idempotent API, a Kafka event log, fraud scoring and a hash-chained ledger. Send payments, kill any service, and watch the saga compensate or the backlog drain.</p>
+  <div class="sysb rv">
+    <div class="dc">
+      <button class="btn pri" id="sb1">Send payment</button>
+      <button class="btn" id="sb2">Suspicious ₹9,00,000</button>
+      <button class="btn" id="sb3">Retry last (duplicate)</button>
+      <button class="btn" id="sb4">Burst ×8</button>
+      <button class="btn" id="sb5">Chaos run ▶</button>
+      <button class="btn" id="sb6">Reset</button>
+    </div>
+    <div class="mono sh">Click any service in the diagram, or use the toggles under it, to kill or revive it.</div>
+    <canvas id="sc" aria-label="Interactive payments pipeline: click a service to kill it"></canvas>
+    <div class="dc" id="sk"></div>
+    <div class="sx" id="sx">
+      <div><b>0</b><span>payments sent</span></div>
+      <div><b>0</b><span>settled</span></div>
+      <div><b>0</b><span>rolled back</span></div>
+      <div><b>0</b><span>duplicates absorbed</span></div>
+      <div><b>0</b><span>rejected (503)</span></div>
+      <div><b>0</b><span>events waiting in Kafka</span></div>
+    </div>
+    <div class="mono sled" id="sled"></div>
+    <div class="sl mono" id="slog" aria-live="polite"></div>
+  </div>
 </section>
 
 <section id="exp">
@@ -471,6 +543,96 @@ repo:"monzo-txn-ml"}
 ];
 
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* animated architecture diagrams (data packets travel the real path) */
+const AR=[
+{n:[['app','Driver app','GPS ping',80,60],['loc','driver-location','writes Redis GEO',250,60],['kafka','Kafka','location events',430,60],['disp','dispatch','Quadtree · A*',610,60],['trk','tracking','STOMP push',790,60],['redis','Redis GEO','source of truth',250,200],['eta','ETA service','FastAPI · ML',610,200],['rider','Rider','WebSocket',790,200]],
+ e:[['app','loc'],['loc','kafka'],['kafka','disp'],['disp','trk'],['loc','redis'],['disp','eta'],['trk','rider']],
+ f:[[['app','loc','kafka','disp','trk','rider'],0,2],[['loc','redis'],1,1],[['disp','eta','disp'],4,1]]},
+{n:[['kafka','Kafka','filings · prices · news',90,130],['faiss','FAISS','embeddings',280,130],['lg','LangGraph','orchestrator',450,130],['risk','Risk agent','level · score',640,45],['sent','Sentiment agent','score · outlook',640,130],['port','Portfolio agent','BUY · HOLD · SELL',640,215],['rep','Typed report','Pydantic',820,130]],
+ e:[['kafka','faiss'],['faiss','lg'],['lg','risk'],['lg','sent'],['lg','port'],['risk','rep'],['sent','rep'],['port','rep']],
+ f:[[['kafka','faiss','lg','sent','rep'],0,2],[['lg','risk','rep'],1,1],[['lg','port','rep'],2,1]]},
+{n:[['client','Client','POST /transfer',80,95],['orch','Orchestrator','saga',265,95],['res','Reserve funds','debit',450,95],['cr','Credit','destination',635,95],['led','Ledger','hash chain',810,95],['redis','Redis','idempotency key',265,205]],
+ e:[['client','orch'],['orch','res'],['res','cr'],['cr','led'],['orch','redis']],
+ f:[[['client','orch','res','cr','led'],0,2],[['orch','redis','orch'],1,1],[['cr','res','orch','client'],3,1]]},
+{n:[['cl','Clients','64 threads',80,130],['lim','Limiter','Java · RESP2',280,130],['redis','Redis','Lua · atomic',490,130],['ok','Allowed','under the limit',710,60],['no','429','over the limit',710,200]],
+ e:[['cl','lim'],['lim','redis'],['redis','ok'],['redis','no']],
+ f:[[['cl','lim','redis','ok'],2,3],[['cl','lim','redis','no'],3,1]]},
+{n:[['key','Key update','publish',85,130],['mk','Merkle log','Java 21',300,60],['au','Audit log','hash chain',300,200],['ver','Verifier','Python · FastAPI',520,130],['res','Proof','root matches',740,130]],
+ e:[['key','mk'],['key','au'],['mk','ver'],['au','ver'],['ver','res']],
+ f:[[['key','mk','ver','res'],0,1],[['key','au','ver','res'],1,1]]},
+{n:[['api','Transaction API','REST · persists',90,110],['kafka','Kafka','transactions',290,110],['fraud','Fraud service','rule engine',480,110],['alerts','Alerts topic','by severity',660,60],['notify','Notification','SMS · email',820,60],['db','PostgreSQL','alerts · txns',480,210]],
+ e:[['api','kafka'],['kafka','fraud'],['fraud','alerts'],['alerts','notify'],['fraud','db']],
+ f:[[['api','kafka','fraud','alerts','notify'],0,2],[['fraud','db'],1,1]]},
+{n:[['agent','RL agent','policy',120,110],['env','fraud_triage_env','OpenEnv',470,110],['rew','Reward','TP +1.0 · FN −3.0',790,110],['obs','Next transaction','risk features',295,215]],
+ e:[['agent','env','APPROVE · FLAG · ESCALATE · BLOCK'],['env','rew'],['env','obs'],['obs','agent']],
+ f:[[['agent','env'],0,2],[['env','rew'],2,1],[['env','obs','agent'],1,1]]},
+{n:[['cat','Catalog','items',90,130],['faiss','FAISS','retrieve candidates',310,130],['lgb','LightGBM','rank candidates',530,130],['top','Top results','ordered list',750,130]],
+ e:[['cat','faiss'],['faiss','lgb'],['lgb','top']],
+ f:[[['cat','faiss'],1,5],[['faiss','lgb'],4,3],[['lgb','top'],0,1]]},
+{n:[['pay','Payment','card payment',80,130],['ml','XGBoost','scores gateways',280,130],['rt','Routing engine','best gateway',480,130],['ga','Gateway A','chosen',700,45],['gb','Gateway B','retry path',700,130],['gc','Gateway C','standby',700,215],['llm','LLM','explains decision',480,225]],
+ e:[['pay','ml'],['ml','rt'],['rt','ga'],['rt','gb'],['rt','gc'],['rt','llm']],
+ f:[[['pay','ml','rt','ga'],2,2],[['rt','llm'],4,1],[['rt','gb'],1,1]]},
+{n:[['tx','Transactions','Monzo API',80,130],['fe','FeatureEngineer','rolling · merchant',290,130],['an','AnomalyDetector','Isolation Forest',530,45],['sp','SpendingPredictor','XGBoost',530,130],['cc','CategoryClassifier','LightGBM + TF-IDF',530,215],['out','Insights','flags · forecast · labels',790,130]],
+ e:[['tx','fe'],['fe','an'],['fe','sp'],['fe','cc'],['an','out'],['sp','out'],['cc','out']],
+ f:[[['tx','fe','sp','out'],0,2],[['fe','an','out'],3,1],[['fe','cc','out'],4,1]]}
+];
+function arch(i){const A=AR[i];if(!A)return'';const COL=['#ffffff','#7aa2ff','#5fe3c0','#ff6b6b','#b58cff'],nd={};
+A.n.forEach((n,k)=>{const w=Math.max(112,Math.max(n[1].length*7.6,(n[2]||'').length*5.9)+26);nd[n[0]]={t:n[1],s:n[2]||'',x:n[3],y:n[4],w,h:n[2]?46:38,k}});
+let s=`<svg viewBox="0 0 900 260" role="img" aria-label="${esc(P[i][2])} architecture diagram">`;
+A.e.forEach(q=>{const a=nd[q[0]],b=nd[q[1]];s+=`<path class="ed" d="M${a.x} ${a.y}L${b.x} ${b.y}"/>`;if(q[2])s+=`<text class="el" x="${(a.x+b.x)/2}" y="${(a.y+b.y)/2-9}">${esc(q[2])}</text>`});
+Object.values(nd).forEach(n=>{s+=`<g class="an" style="--k:${n.k}"><rect class="nb" x="${n.x-n.w/2}" y="${n.y-n.h/2}" width="${n.w}" height="${n.h}" rx="10"/><text class="nt" x="${n.x}" y="${n.y+(n.s?-2:4)}">${esc(n.t)}</text>${n.s?`<text class="ns" x="${n.x}" y="${n.y+13}">${esc(n.s)}</text>`:''}</g>`});
+if(!RM)A.f.forEach((f,fi)=>{const ids=f[0],col=COL[f[1]],cnt=f[2]||1;let d='',L=0;
+ids.forEach((id,j)=>{const p=nd[id];d+=(j?'L':'M')+p.x+' '+p.y;if(j){const q=nd[ids[j-1]];L+=Math.hypot(p.x-q.x,p.y-q.y)}});
+const t=L/190,D=t+1.4+fi*.35,fr=t/D;
+for(let j=0;j<cnt;j++){const b=(fi*.5+j*t/cnt).toFixed(2);
+s+=`<g opacity="0"><animateMotion dur="${D.toFixed(2)}s" begin="${b}s" repeatCount="indefinite" path="${d}" keyPoints="0;1;1" keyTimes="0;${fr.toFixed(3)};1" calcMode="linear"/><animate attributeName="opacity" dur="${D.toFixed(2)}s" begin="${b}s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;.03;${(fr-.03).toFixed(3)};${fr.toFixed(3)};1"/><circle r="9" fill="${col}" opacity=".22"/><circle r="4.2" fill="${col}"/></g>`}});
+return s+'</svg>'}
+const archBlock=i=>AR[i]?`<h4>System in motion</h4><div class="arch">${arch(i)}</div><p class="mono archl">${RM?'Static diagram, because reduced motion is on.':'Packets follow the real data path. White: request · blue: lookup · green: success · purple: model or LLM · red: failure or compensation.'}</p>`:'';
+/* case studies, written from each project's own README facts */
+const CS={
+0:{p:"Match every incoming order to the best available driver while a fleet moves in real time, then predict when that driver will arrive.",
+c:["Driver positions change constantly, so the spatial index has to stay current without a Redis query on every request.","Arrival time depends on the real road route and time-of-day traffic, not straight-line distance.","Dispatch has to keep working when the ML service is down.","There is no licensed map dataset, so the road network is a synthetic grid."],
+d:[["Spatial index","An in-memory Quadtree, kept in sync from Kafka location events","Querying Redis GEO on every request","Nearest-driver queries run in O(log n + k) with no network hop. Measured 14.3× faster spatial search at 50K drivers."],
+["Pathfinding","A* as the primary pathfinder, with Dijkstra as the ground truth and fallback","Dijkstra alone","Haversine-guided A* explores far fewer nodes. Dijkstra, O((V+E) log V) with a binary min-heap, stays as the reference."],
+["Route cache","A hand-built LRU: HashMap plus a doubly linked list","LinkedHashMap","O(1) get and put, and repeated routes are memoised."],
+["ML dependency","A trained ETA model served over FastAPI, with a graceful fallback to the graph estimate","Making dispatch depend on the ML service being up","If the ML service is down, orders still get assigned."],
+["Locking","One coarse read/write lock around the Quadtree","Fine-grained locking","Lock contention is not the bottleneck at this dispatch volume. Revisit if the profile changes."]],
+o:"14.3× faster spatial search at 50K drivers, an ETA model with R² 0.97 and about 2.35 minutes mean absolute error, and seven services across Java and Python."},
+1:{p:"Answer complex financial questions from SEC filings, prices and news, and return a typed report with risk, sentiment and portfolio signals instead of free text.",
+c:["Each question needs 3 to 5 LLM calls, so model latency adds up.","LLM output is not guaranteed to be valid JSON.","Retrieval quality can drift as new filings and news arrive.","The whole stack has to be rebuildable, not hand-configured."],
+d:[["Retrieval store","FAISS, in-process and persisted to S3","A managed vector database","No network hop, and at sub-100K vectors it beats a hosted service on latency."],
+["LLM provider","Groq","","Chosen for speed across 3 to 5 LLM calls per query."],
+["Output validation","Pydantic schemas on every agent output, with up to 3 retries and exponential backoff","Trusting raw LLM JSON","Malformed output is caught and retried before it can reach the report."],
+["Retrieval drift","A daily Airflow DAG that watches retrieval precision","Assuming retrieval stays good","If precision drops below 75%, embeddings are retrained and the FAISS index is rebuilt automatically."],
+["Infrastructure","Terraform on AWS EKS","","The stack rebuilds with terraform apply in under 10 minutes."]],
+o:"A full risk, sentiment and portfolio report in under 3 seconds from 3 cooperating agents, a 75% precision floor that triggers retraining, and a stack that rebuilds in under 10 minutes."},
+3:{p:"Limit requests per key across many concurrent callers, without letting a race condition admit more requests than the limit.",
+c:["There is no client library: the Redis protocol client is hand-written.","The check and the update have to happen as one atomic step.","It has to hold up under 64 concurrent threads fighting over a single hot key."],
+d:[["Atomicity","Lua scripts that run inside Redis","GET then INCR from the client","The naive version admitted 1,024 of 1,000 requests, a 2.4% overshoot. The atomic versions admit exactly 1,000."],
+["Algorithms","Both a sliding window log (sorted set) and a token bucket (hash)","","Both are atomic Lua scripts. Sliding window: 43,500 req/s at p99 2.5 ms. Token bucket: 42,900 req/s at p99 2.8 ms."],
+["Redis client","A minimal RESP2 client over raw sockets","A client library","No driver dependency, so every byte of the protocol is code in the repo."],
+["Proof, not claims","Keep the naive limiter in the repo on purpose, with a benchmark that races it","Showing only the correct version","The race condition is demonstrated, not asserted."]],
+o:"43,500 req/s at p50 1.4 ms and p99 2.5 ms across 3,200 keys, with 0% overshoot against 2.4% for the naive counter."},
+5:{p:"Ingest financial transactions, score them for fraud risk in real time, and route suspicious activity to alerting, without ingestion blocking on scoring.",
+c:["Ingestion and fraud scoring have very different load profiles.","Every transaction and alert needs a durable, replayable record.","An analyst has to be able to say why a transaction was flagged."],
+d:[["Decoupling","Kafka between ingestion and scoring","Scoring inside the request","Ingestion does not block on scoring latency, and the two scale independently."],
+["Audit trail","Kafka as a durable, replayable log of every transaction and alert","","It gives a record to audit and replay, and a future ML scorer or data-lake sink can subscribe to the same topics."],
+["Scoring approach","Four explainable rules: amount threshold, high-risk merchants, geo risk and velocity","A raw model score","In fincrime work an analyst has to say why a transaction was flagged."],
+["Velocity counting","In-memory per instance, for now","","Simple and fast today. A multi-replica deployment would move it to Redis."]],
+o:"Six services on Kubernetes, four explainable fraud rules and three replicas on the hot path. Next: an XGBoost model on the same features, with the rules kept as a fallback and explanation layer."},
+6:{p:"Existing OpenEnv finance environments cover stock trading and document QA, but nothing covered transaction-level risk decisions, the core loop of a payments fraud team.",
+c:["The agent sees one transaction at a time and picks APPROVE, FLAG, ESCALATE or BLOCK.","Fraud and legitimate transactions come from overlapping feature distributions, so the task rewards real pattern learning over simple thresholds.","The reward has to reflect how payment risk teams weigh outcomes."],
+d:[["Reward shape","Asymmetric rewards: a missed fraud costs −3.0, a false alarm −0.5","Symmetric rewards","Missing fraud costs six times more than a false alarm, matching how payment risk teams weigh outcomes."],
+["Escalation","A fixed extra cost of −0.1 on ESCALATE","","It adds cost without adding evidence, so it always pays less than FLAG or BLOCK."],
+["Data","Synthetic transactions with engineered risk features","","Amount, z-score against account history, 1h and 24h velocity, new merchant or device, cross-border flag, time of day and account age."],
+["Episode design","200-step episodes with a default 12% fraud rate","","Both are configurable through episode_length and fraud_rate."]],
+o:"Merged into OpenEnv as PR #926, with all tests passing."}
+};
+Object.entries(CS).forEach(([i,v])=>{D[i].cs=v});[2,5].forEach(i=>{D[i].live=1});
+function csBlock(d){const c=d.cs;if(!c)return'';
+let h=`<h4>Case study</h4><div class="csq"><div class="csi"><span class="mono">The problem</span><p>${esc(c.p)}</p></div><div class="csi"><span class="mono">Constraints</span><ul>${c.c.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></div></div>`;
+h+=`<h4>Decisions that shaped it</h4><div class="csg">${c.d.map((t,k)=>`<div class="dcard"><span class="mono">Decision ${k+1}</span><h5>${esc(t[0])}</h5><p class="cz"><b>Chose</b>${esc(t[1])}</p>${t[2]?`<p><b>Over</b>${esc(t[2])}</p>`:''}<p><b>Because</b>${esc(t[3])}</p></div>`).join('')}</div>`;
+return h+`<h4>Outcome</h4><p class="ps" style="margin:0">${esc(c.o)}</p>`}
 const pm=document.createElement('div');pm.id='pm';pm.hidden=true;
 pm.innerHTML='<div class="pp" role="dialog" aria-modal="true" aria-labelledby="pttl" tabindex="-1"><button class="px" aria-label="Close">✕</button><div class="pc"></div></div>';document.body.appendChild(pm);
 let pcur=-1,pback=null;
@@ -479,9 +641,12 @@ h+=`<span class="mono">${p[0]} · ${esc(p[1])}</span><h2 id="pttl">${esc(p[2])}<
 h+=`<div class="pa"><a class="btn solid" href="${repo}" target="_blank" rel="noopener">${d.repo?(d.full?'View on GitHub ↗':'Source on GitHub ↗'):'GitHub profile ↗'}</a>`;
 (d.links||[]).forEach(l=>{h+=`<a class="btn" href="${l[1]}" target="_blank" rel="noopener">${esc(l[0])} ↗</a>`});
 if(d.demo)h+=`<a class="btn" href="#demos" data-pgo="lab">Try the demo</a>`;
+if(d.live)h+=`<a class="btn" href="#system" data-pgo="system">Break it live</a>`;
 if(i===0)h+=`<a class="btn" href="#demos" data-pgo="lab">Try the demo</a>`;
 h+='</div>';
+h+=archBlock(i);
 if(d.res)h+=`<div class="pr">${d.res.map(r=>`<div><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('')}</div>`;
+h+=csBlock(d);
 if(d.why)h+=`<h4>Why it exists</h4><ul>${d.why.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
 if(d.flow)h+=`<h4>How it works</h4><ol>${d.flow.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`;
 if(d.feats)h+=`<h4>${d.full?'What it does':'Highlights'}</h4><ul>${d.feats.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
@@ -586,7 +751,7 @@ function fire(){const ok=t>=1;if(ok){t--;a++}else d++;const b=document.createEle
 $('#rf').onclick=fire;$('#rb').onclick=()=>{for(let i=0;i<25;i++)setTimeout(fire,i*40)};
 (function l(n){t=Math.min(10,t+(n-last)/1000*3);last=n;bar.style.width=t*10+'%';rs.textContent=`${a} allowed · ${d} rejected (HTTP 429) · ${t.toFixed(1)} tokens left`;requestAnimationFrame(l)})(last)})();
 /* command palette */
-(function(){const p=$('#pal'),i=$('#pi'),l=$('#pl'),S=[['Home',''],['Work','work'],['Lab: RouteMind demo','lab'],['Story','story'],['Contact','contact'],['GitHub ↗',GH],['Download CV','Atharv_Satpute_CV.pdf']];let f=S,k=0;
+(function(){const p=$('#pal'),i=$('#pi'),l=$('#pl'),S=[['Home',''],['Work','work'],['Lab: RouteMind demo','lab'],['Live system','system'],['Story','story'],['Contact','contact'],['GitHub ↗',GH],['Download CV','Atharv_Satpute_CV.pdf']];let f=S,k=0;
 const r=()=>l.innerHTML=f.map((s,n)=>`<div class="${n==k?'on':''}" data-n="${n}">${s[0]}</div>`).join('');
 const go=s=>{p.hidden=true;if(s[1].endsWith('.pdf')){const a=document.createElement('a');a.href=s[1];a.download=s[1];a.click();cvDone()}else s[1].startsWith('http')?open(s[1],'_blank'):(location.hash=s[1])};
 const op=()=>{p.hidden=false;i.value='';f=S;k=0;r();i.focus()};
@@ -679,11 +844,126 @@ $$('.mail').forEach(m=>m.insertAdjacentHTML('afterbegin',ic('mail')));
 const tt=document.createElement('div');tt.id='toast';tt.setAttribute('role','status');tt.innerHTML=ic('check')+'<span>CV downloading</span>';document.body.appendChild(tt);let tto;
 function cvDone(){tt.classList.add('show');clearTimeout(tto);tto=setTimeout(()=>tt.classList.remove('show'),2400)}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-cv]');if(!a)return;a.classList.add('dl');setTimeout(()=>a.classList.remove('dl'),1000);cvDone()});
+/* replay the card entrance whenever the Work page opens */
+function replay(){$$('.prow').forEach(r=>{r.classList.remove('in');void r.offsetWidth;r.classList.add('in')})}
+/* project filters, with cards that glide to their new places */
+(function(){const fl=$('#fl');if(!fl)return;
+const G=[['All',null],['Distributed',[0,2,3,5]],['AI · ML',[1,6,7,8,9]],['Payments · fraud',[2,5,6,8]],['Infra · security',[3,4]]];
+fl.innerHTML=G.map((g,k)=>`<button data-k="${k}" class="${k?'':'on'}">${g[0]}<small>${g[1]?g[1].length:P.length}</small></button>`).join('');
+function filt(idx){const rows=$$('.prow'),f=rows.map(r=>r.getBoundingClientRect());
+rows.forEach((r,i)=>{r.style.display=(!idx||idx.includes(i))?'':'none'});
+if(RM)return;
+rows.forEach((r,i)=>{if(r.style.display==='none')return;const b=r.getBoundingClientRect(),a=f[i],ez='cubic-bezier(.2,.7,.2,1)';
+if(!a.width){r.animate([{opacity:0,transform:'scale(.9) translateY(24px)'},{opacity:1,transform:'none'}],{duration:520,easing:ez});return}
+const dx=a.left-b.left,dy=a.top-b.top;if(dx||dy)r.animate([{transform:`translate(${dx}px,${dy}px)`},{transform:'none'}],{duration:560,easing:ez})})}
+fl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fl.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));filt(G[+b.dataset.k][1])});
+fl.addEventListener('pointerover',e=>{$('#cur').classList.toggle('big',!!e.target.closest('button'))});
+fl.addEventListener('pointerleave',()=>$('#cur').classList.remove('big'))})();
+/* ===== live system: interactive payments pipeline (saga, idempotency, Kafka lag, hash-chained ledger) ===== */
+(function(){
+const sec=$('#sys'),c=$('#sc');if(!sec||!c)return;
+const x=c.getContext('2d'),MONO="'JetBrains Mono',ui-monospace,monospace";
+const ID=['client','gw','pay','redis','kafka','fraud','ledger','notif'],CONS=['fraud','ledger','notif'];
+const LB={client:['Client','POST /pay'],gw:['API Gateway','edge'],pay:['Payment','saga'],redis:['Redis','idempotency'],kafka:['Kafka','event log'],fraud:['Fraud','rule engine'],ledger:['Ledger','hash chain'],notif:['Notify','sms · email']};
+const EDG=[['client','gw'],['gw','pay'],['pay','redis'],['pay','kafka'],['kafka','fraud'],['kafka','ledger'],['kafka','notif']];
+const HINT={gw:' Requests now get 503.',pay:' Requests now get 503.',redis:' Payments are refused rather than risk a double charge.',kafka:' Nothing can be published, so sagas will compensate.',fraud:' Events keep landing in Kafka, so lag grows.',ledger:' Events keep landing in Kafka, so lag grows.',notif:' Events keep landing in Kafka, so lag grows.'};
+let W=0,H=0,dpr=1,POS={},NW=100,NH=44,clk=0,last=0,lu=0,hov=null,kn=0;
+let T,TM,dn,Q,busy,seen,st,led,pulse,lastKey;
+const hh=s=>{let a=2166136261;for(const ch of s){a^=ch.charCodeAt(0);a=Math.imul(a,16777619)}return(a>>>0).toString(16).padStart(8,'0').slice(0,6)};
+function init(){T=[];TM=[];dn={};Q={fraud:[],ledger:[],notif:[]};busy={};seen=new Set();st={sent:0,set:0,rb:0,dup:0,rej:0};led={n:0,head:'000000',amt:0};pulse={};lastKey=null;clk=0}
+init();
+const lgEl=$('#slog'),skEl=$('#sk'),sxEl=$('#sx'),ledEl=$('#sled');
+function lg(t,cl){const d=document.createElement('div');if(cl)d.className=cl;d.textContent='['+(clk/1000).toFixed(1)+'s] '+t;lgEl.prepend(d);while(lgEl.children.length>9)lgEl.lastChild.remove()}
+/* layout: horizontal on desktop, stacked on phones */
+function lay(){W=c.clientWidth;if(!W)return false;const m=W<640;H=m?500:380;c.style.height=H+'px';dpr=Math.min(devicePixelRatio||1,2);c.width=Math.round(W*dpr);c.height=Math.round(H*dpr);
+const p=m?{client:[.17,.07],gw:[.5,.07],pay:[.83,.07],redis:[.83,.27],kafka:[.42,.47],fraud:[.17,.88],ledger:[.5,.88],notif:[.83,.88]}:{client:[.07,.5],gw:[.21,.5],pay:[.37,.5],redis:[.37,.87],kafka:[.62,.5],fraud:[.88,.13],ledger:[.88,.5],notif:[.88,.87]};
+POS={};ID.forEach(k=>POS[k]=[p[k][0]*W,p[k][1]*H]);NW=m?Math.min(104,W*.27):clamp(W*.1,84,120);NH=m?42:46;return true}
+/* motion helpers on a virtual clock, so everything pauses when the page is hidden */
+const hop=(a,b,col,cb,dur=340)=>T.push({a,b,col,cb,dur,t0:clk});
+const path=(L,col,cb,dur)=>{let i=0;(function n(){if(i>=L.length-1){if(cb)cb();return}hop(L[i],L[i+1],col,()=>{i++;n()},dur)})()};
+const later=(ms,f)=>TM.push([clk+ms,f]);
+/* the pipeline */
+function rej(back,msg){st.rej++;lg(msg,'x');path(back,'#ff6b6b')}
+function sendPay(sus,dup){
+const key=dup||('idem-'+(++kn).toString(16).padStart(4,'0')),m={key,sus,amt:sus?900000:100+(Math.random()*4900|0)};
+if(!dup)lastKey=key;st.sent++;
+lg('POST /pay '+key+' · ₹'+m.amt.toLocaleString('en-IN')+(dup?' (retry)':''));
+path(['client','gw'],'#fff',()=>{
+if(dn.gw)return rej(['gw','client'],'API Gateway is down: 503. The client retries with the same key.');
+path(['gw','pay'],'#fff',()=>{
+if(dn.pay)return rej(['pay','gw','client'],'Payment service is down: 503. Nothing was charged.');
+path(['pay','redis'],'#7aa2ff',()=>{
+if(dn.redis)return rej(['redis','pay','gw','client'],'Redis is down: refusing to charge without an idempotency check (fail closed).');
+path(['redis','pay'],'#7aa2ff',()=>{
+if(seen.has(key)){st.dup++;lg('Key '+key+' already seen: cached result returned. No second debit.','ok');return path(['pay','gw','client'],'#7cffb2')}
+seen.add(key);lg('Funds reserved, key stored in Redis (SETNX).');
+path(['pay','kafka'],'#fff',()=>{
+if(dn.kafka){seen.delete(key);st.rb++;lg('Kafka unreachable: saga compensates, funds released, key freed.','x');return path(['kafka','pay','gw','client'],'#ff6b6b')}
+lg('txn.created published to Kafka. Client gets 202 Accepted.');Q.fraud.push(m);path(['kafka','pay','gw','client'],'#5a6a9a')})})})})})}
+function work(s,m){
+if(dn[s]){Q[s].unshift(m);busy[s]=0;lg(LB[s][0]+' died while processing: the event will be redelivered (at-least-once).','am');return}
+if(s==='fraud'){busy.fraud=0;
+if(m.sus){lg('Fraud: amount ceiling and high-risk merchant, score 0.91. BLOCK.','x');st.rb++;return path(['fraud','kafka','pay'],'#ff6b6b',()=>{lg('Compensation: funds released. Ledger stays balanced.','ok');path(['pay','gw','client'],'#ff6b6b')})}
+lg('Fraud: score 0.12, pass.');return path(['fraud','kafka'],'#fff',()=>Q.ledger.push(m))}
+if(s==='ledger'){busy.ledger=0;led.n++;led.head=hh(led.head+m.key+m.amt);led.amt+=m.amt;lg('Ledger: entry #'+led.n+' appended, head '+led.head+'.');return path(['ledger','kafka'],'#fff',()=>Q.notif.push(m))}
+busy.notif=0;st.set++;lg('Notify: SMS and email sent. Payment settled.','ok')}
+function pump(){if(dn.kafka)return;CONS.forEach(s=>{if(busy[s]||dn[s]||!Q[s].length)return;busy[s]=1;const m=Q[s].shift();
+path(['kafka',s],'#fff',()=>{if(dn[s]){Q[s].unshift(m);busy[s]=0;lg(LB[s][0]+' died mid-delivery: the event stays in Kafka and will be redelivered.','am');return}later(240,()=>work(s,m))})})}
+function toggle(k){if(k==='client')return;
+if(dn[k]){dn[k]=0;lg(LB[k][0]+' recovered.'+(Q[k]&&Q[k].length?' Draining '+Q[k].length+' queued events in order.':''),'ok')}
+else{dn[k]=1;lg(LB[k][0]+' is down.'+(HINT[k]||''),'x')}sk()}
+function reset(q){init();lgEl.innerHTML='';sk();ui();if(!q)lg('Reset. All services are up.','ok')}
+function chaos(){reset(true);lg('Chaos run: Fraud goes down, 4 payments arrive, then Fraud recovers.','am');
+later(500,()=>{if(!dn.fraud)toggle('fraud')});[0,1,2,3].forEach(i=>later(1500+i*650,()=>sendPay(false)));later(5600,()=>{if(dn.fraud)toggle('fraud')})}
+/* controls */
+skEl.innerHTML='<span class="mono" style="align-self:center;margin-right:.4rem">Kill a service</span>'+ID.filter(k=>k!=='client').map(k=>`<button class="btn" data-k="${k}"></button>`).join('');
+function sk(){skEl.querySelectorAll('button').forEach(b=>{const k=b.dataset.k,d=dn[k];b.classList.toggle('dead',!!d);b.textContent=(d?'✕ ':'● ')+LB[k][0]})}
+skEl.addEventListener('click',e=>{const b=e.target.closest('button');if(b)toggle(b.dataset.k)});
+skEl.addEventListener('pointerover',e=>{$('#cur').classList.toggle('big',!!e.target.closest('button'))});
+skEl.addEventListener('pointerleave',()=>$('#cur').classList.remove('big'));
+$('#sb1').onclick=()=>sendPay(false);
+$('#sb2').onclick=()=>sendPay(true);
+$('#sb3').onclick=()=>{if(!lastKey){lg('Send a payment first, then retry its key.','am');return}sendPay(false,lastKey)};
+$('#sb4').onclick=()=>{for(let i=0;i<8;i++)later(i*260,()=>sendPay(false))};
+$('#sb5').onclick=chaos;$('#sb6').onclick=()=>reset();
+const at=e=>{const r=c.getBoundingClientRect(),px=e.clientX-r.left-c.clientLeft,py=e.clientY-r.top-c.clientTop;return ID.find(k=>POS[k]&&Math.abs(px-POS[k][0])<=NW/2&&Math.abs(py-POS[k][1])<=NH/2)};
+c.addEventListener('pointermove',e=>{hov=at(e)||null});c.addEventListener('pointerleave',()=>{hov=null});
+c.addEventListener('click',e=>{const k=at(e);if(k)toggle(k)});
+function ui(){const lag=CONS.reduce((a,k)=>a+Q[k].length,0),v=[st.sent,st.set,st.rb,st.dup,st.rej,lag],bs=sxEl.querySelectorAll('b');
+bs.forEach((b,i)=>{const t=String(v[i]);if(b.textContent!==t)b.textContent=t});sxEl.lastElementChild.classList.toggle('hot',lag>0);
+const a='₹'+led.amt.toLocaleString('en-IN');ledEl.textContent='Ledger · '+led.n+' entries · head '+led.head+' · debits '+a+' = credits '+a+' ✓'}
+/* drawing */
+function rr(X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+function draw(){x.setTransform(dpr,0,0,dpr,0,0);x.fillStyle='#000';x.fillRect(0,0,W,H);
+x.fillStyle='rgba(255,255,255,.05)';for(let X=20;X<W;X+=28)for(let Y=20;Y<H;Y+=28)x.fillRect(X,Y,1.5,1.5);
+x.lineWidth=1.4;EDG.forEach(e=>{const a=e[0],b=e[1];x.strokeStyle=(dn[a]||dn[b])?'rgba(255,107,107,.45)':'rgba(140,165,255,.28)';x.setLineDash([4,6]);x.lineDashOffset=-clk/55;x.beginPath();x.moveTo(POS[a][0],POS[a][1]);x.lineTo(POS[b][0],POS[b][1]);x.stroke()});x.setLineDash([]);
+const sm=NW<95;x.textAlign='center';
+ID.forEach(k=>{const X=POS[k][0],Y=POS[k][1],d=dn[k],pu=Math.max(0,1-(clk-(pulse[k]===undefined?-1e9:pulse[k]))/500);
+rr(X-NW/2,Y-NH/2,NW,NH,10);x.fillStyle=d?'#1a0b0b':'#0b0d16';x.fill();
+x.lineWidth=1.3+pu*1.2;x.strokeStyle=d?'#ff6b6b':(pu>0?'rgba(255,255,255,'+(.35+pu*.65)+')':(hov===k?'#fff':'#3b4166'));x.stroke();
+x.fillStyle=d?'#ff9a9a':'#fff';x.font='600 '+(sm?10.5:12)+'px '+MONO;x.fillText(LB[k][0],X,Y-3);
+x.fillStyle=d?'#ff6b6b':'#7d86a8';x.font='400 '+(sm?8:9)+'px '+MONO;x.fillText(d?'DOWN':LB[k][1],X,Y+12)});
+CONS.forEach(k=>{const n=Q[k].length;if(!n)return;const X=POS[k][0]-NW/2,Y=POS[k][1]+NH/2+8,m=Math.min(n,W<900?6:12);x.fillStyle='#ffb86b';for(let i=0;i<m;i++)x.fillRect(X+i*9,Y,6,6);
+x.font='400 10px '+MONO;x.textAlign='left';x.fillText('lag '+n,X+m*9+4,Y+7);x.textAlign='center'});
+T.forEach(o=>{const u=clamp((clk-o.t0)/o.dur,0,1),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2,A=POS[o.a],B=POS[o.b],px=A[0]+(B[0]-A[0])*e,py=A[1]+(B[1]-A[1])*e;
+x.globalAlpha=.25;x.fillStyle=o.col;x.beginPath();x.arc(px,py,10,0,7);x.fill();x.globalAlpha=1;x.beginPath();x.arc(px,py,4.5,0,7);x.fill()});
+if(hov&&hov!=='client'){x.font='400 10px '+MONO;x.fillStyle='#8b8b8b';x.fillText(dn[hov]?'click to revive':'click to kill',POS[hov][0],POS[hov][1]-NH/2-6)}}
+function frame(now){requestAnimationFrame(frame);
+if(sec.classList.contains('off')||document.hidden){last=now;return}
+if(!W&&!lay())return;
+clk+=Math.min(now-last||16,60);last=now;
+for(let i=T.length-1;i>=0;i--){const o=T[i];if(o&&clk-o.t0>=o.dur){T.splice(i,1);pulse[o.b]=clk;if(o.cb)o.cb()}}
+for(let i=TM.length-1;i>=0;i--){const t=TM[i];if(t&&clk>=t[0]){TM.splice(i,1);t[1]()}}
+pump();draw();if(clk-lu>180||clk<lu){lu=clk;ui()}}
+if('ResizeObserver' in window)new ResizeObserver(()=>{const w=c.clientWidth;if(w&&Math.abs(w-W)>1)lay()}).observe(c.parentElement);
+else addEventListener('resize',()=>{if(c.clientWidth)lay()});
+sk();ui();lg('All services are up. Send a payment, or click a service to break it.');
+requestAnimationFrame(frame)})();
 /* multi-page router (hash tokens) with curtain transition */
-const PG={'':['.hero','.marq','#about','#caps'],work:['#work'],lab:['#demos'],story:['#exp','#edu','#stack'],contact:['#contact']},NM={'':'Home',work:'Work',lab:'Lab',story:'Story',contact:'Contact'},NX={'':'work',work:'lab',lab:'story',story:'contact',contact:''};
+const PG={'':['.hero','.marq','#about','#caps'],work:['#work'],lab:['#demos'],system:['#sys'],story:['#exp','#edu','#stack'],contact:['#contact']},NM={'':'Home',work:'Work',lab:'Lab',system:'Live system',story:'Story',contact:'Contact'},NX={'':'work',work:'lab',lab:'system',system:'story',story:'contact',contact:''};
 let cp=null,tg=null;
 function show(k){cp=k;tg=null;Object.values(PG).flat().forEach(s=>$$(s).forEach(e=>e.classList.add('off')));PG[k].forEach(s=>$$(s).forEach(e=>e.classList.remove('off')));
-$$('[data-go]').forEach(a=>a.classList.toggle('on',a.dataset.go==k&&k!==''));scrollTo(0,0);dispatchEvent(new Event('resize'));onScroll();
+$$('[data-go]').forEach(a=>a.classList.toggle('on',a.dataset.go==k&&k!==''));if(k==='work')replay();scrollTo(0,0);dispatchEvent(new Event('resize'));onScroll();
 const n=NX[k];$('#nxt').innerHTML=`<span class='mono'>${k==='contact'?'Back to start':'Next'}</span><a href='#${n}' data-go='${n}'>${k==='contact'?'Home':NM[n]} →</a>`;document.title=(k?NM[k]+' · ':'')+'Atharv Satpute'}
 function route(k,first){k=k in PG?k:'';if(k===cp||k===tg)return;if(first||RM)return show(k);tg=k;const w=$('#wipe');w.firstChild.textContent=NM[k];
 w.animate([{transform:'translateY(101%)'},{transform:'translateY(0)',offset:.45},{transform:'translateY(0)',offset:.55},{transform:'translateY(-101%)'}],{duration:1000,easing:'cubic-bezier(.7,0,.2,1)'});setTimeout(()=>show(k),480)}
